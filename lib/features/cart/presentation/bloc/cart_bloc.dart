@@ -28,6 +28,7 @@ class AddToCart extends CartEvent {
   final Map<String, dynamic> bookingData;
   final int? selectedConfigurableOption; // variant ID for configurable
   final List<Map<String, dynamic>> superAttribute; // [{attrId: optionId}, ...]
+  final Map<String, dynamic> customizableOptions;
 
   const AddToCart({
     required this.productId,
@@ -38,6 +39,7 @@ class AddToCart extends CartEvent {
     this.bookingData = const {},
     this.selectedConfigurableOption,
     this.superAttribute = const [],
+    this.customizableOptions = const {},
   });
 
   @override
@@ -50,6 +52,7 @@ class AddToCart extends CartEvent {
     bookingData,
     selectedConfigurableOption,
     superAttribute,
+    customizableOptions,
   ];
 }
 
@@ -504,6 +507,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         bookingData: event.bookingData,
         selectedConfigurableOption: event.selectedConfigurableOption,
         superAttribute: event.superAttribute,
+        customizableOptions: event.customizableOptions,
       );
 
       emit(

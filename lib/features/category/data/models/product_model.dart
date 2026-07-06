@@ -46,6 +46,7 @@ class ProductModel {
   final List<GroupedProductItem> groupedProducts;
   final List<BundleOption> bundleOptions;
   final List<BookingProductData> bookingProducts;
+  final List<ProductCustomizableOption> customizableOptions;
 
   const ProductModel({
     required this.id,
@@ -89,6 +90,7 @@ class ProductModel {
     this.groupedProducts = const [],
     this.bundleOptions = const [],
     this.bookingProducts = const [],
+    this.customizableOptions = const [],
   });
 
   /// Calculate discount percentage
@@ -502,6 +504,9 @@ class ProductModel {
       groupedProducts: _parseGroupedProducts(json['groupedProducts']),
       bundleOptions: _parseBundleOptions(json['bundleOptions']),
       bookingProducts: _parseBookingProducts(json['bookingProducts']),
+      customizableOptions: _parseCustomizableOptions(
+        json['customizableOptions'],
+      ),
     );
   }
 
@@ -661,6 +666,208 @@ class ProductModel {
           (e) => BookingProductData.fromJson(e['node'] as Map<String, dynamic>),
         )
         .toList();
+  }
+
+  static List<ProductCustomizableOption> _parseCustomizableOptions(
+    dynamic json,
+  ) {
+    if (json == null) return [];
+
+    if (json is Map<String, dynamic>) {
+      final edges = json['edges'] as List<dynamic>?;
+      if (edges != null) {
+        return edges
+            .map(
+              (e) => ProductCustomizableOption.fromJson(
+                e['node'] as Map<String, dynamic>,
+              ),
+            )
+            .toList();
+      }
+
+      final values = json['data'] as List<dynamic>?;
+      if (values != null) {
+        return values
+            .whereType<Map<String, dynamic>>()
+            .map(ProductCustomizableOption.fromJson)
+            .toList();
+      }
+    }
+
+    if (json is List) {
+      return json
+          .whereType<Map<String, dynamic>>()
+          .map(ProductCustomizableOption.fromJson)
+          .toList();
+    }
+
+    return [];
+  }
+}
+
+class ProductCustomizableOption {
+  final String id;
+  final int? numericId;
+  final String? type;
+  final bool isRequired;
+  final int? maxCharacters;
+  final String? supportedFileExtensions;
+  final int? sortOrder;
+  final String? label;
+  final List<ProductCustomizableOptionPrice> prices;
+
+  const ProductCustomizableOption({
+    required this.id,
+    this.numericId,
+    this.type,
+    this.isRequired = false,
+    this.maxCharacters,
+    this.supportedFileExtensions,
+    this.sortOrder,
+    this.label,
+    this.prices = const [],
+  });
+
+  factory ProductCustomizableOption.fromJson(Map<String, dynamic> json) {
+    final translation = json['translation'] as Map<String, dynamic>?;
+    return ProductCustomizableOption(
+      id: json['id']?.toString() ?? json['_id']?.toString() ?? '',
+      numericId: ProductModel._parseInt(json['_id']),
+      type: json['type']?.toString(),
+      isRequired:
+          ProductModel._parseBool(json['isRequired'] ?? json['is_required']) ??
+          false,
+      maxCharacters: ProductModel._parseInt(
+        json['maxCharacters'] ?? json['max_characters'],
+      ),
+      supportedFileExtensions:
+          (json['supportedFileExtensions'] ?? json['supported_file_extensions'])
+              ?.toString(),
+      sortOrder: ProductModel._parseInt(
+        json['sortOrder'] ?? json['sort_order'],
+      ),
+      label: json['label']?.toString() ?? translation?['label']?.toString(),
+      prices: _parsePrices(
+        json['customizableOptionPrices'] ??
+            json['customizable_option_prices'] ??
+            json['prices'],
+      ),
+    );
+  }
+
+  String get normalizedType => (type ?? '').toLowerCase().trim();
+
+  bool get hasChoicePrices =>
+      normalizedType == 'checkbox' ||
+      normalizedType == 'radio' ||
+      normalizedType == 'select' ||
+      normalizedType == 'multiselect';
+
+  bool get isMultiValue =>
+      normalizedType == 'checkbox' || normalizedType == 'multiselect';
+
+  String get displayLabel => (label?.isNotEmpty ?? false) ? label! : 'Option';
+
+  ProductCustomizableOptionPrice? get singlePriceOption =>
+      prices.isNotEmpty ? prices.first : null;
+
+  List<String> get supportedFileExtensionList {
+    final rawValue = supportedFileExtensions?.trim();
+    if (rawValue == null || rawValue.isEmpty) return const [];
+
+    final values = <String>[];
+    for (final item in rawValue.split(',')) {
+      final extension = item.trim().replaceFirst('.', '').toLowerCase();
+      if (extension.isNotEmpty && !values.contains(extension)) {
+        values.add(extension);
+      }
+    }
+
+    return values;
+  }
+
+  bool allowsFileName(String fileName) {
+    final allowedExtensions = supportedFileExtensionList;
+    if (allowedExtensions.isEmpty) return true;
+
+    final index = fileName.lastIndexOf('.');
+    if (index < 0 || index == fileName.length - 1) return false;
+
+    final extension = fileName.substring(index + 1).toLowerCase();
+    return allowedExtensions.contains(extension);
+  }
+
+  static List<ProductCustomizableOptionPrice> _parsePrices(dynamic json) {
+    if (json == null) return [];
+
+    if (json is Map<String, dynamic>) {
+      final edges = json['edges'] as List<dynamic>?;
+      if (edges != null) {
+        return edges
+            .map(
+              (e) => ProductCustomizableOptionPrice.fromJson(
+                e['node'] as Map<String, dynamic>,
+              ),
+            )
+            .toList();
+      }
+
+      final values = json['data'] as List<dynamic>?;
+      if (values != null) {
+        return values
+            .whereType<Map<String, dynamic>>()
+            .map(ProductCustomizableOptionPrice.fromJson)
+            .toList();
+      }
+    }
+
+    if (json is List) {
+      return json
+          .whereType<Map<String, dynamic>>()
+          .map(ProductCustomizableOptionPrice.fromJson)
+          .toList();
+    }
+
+    return [];
+  }
+}
+
+class ProductCustomizableOptionPrice {
+  final String id;
+  final int? numericId;
+  final String? label;
+  final double? price;
+  final String? formattedPrice;
+  final int? sortOrder;
+
+  const ProductCustomizableOptionPrice({
+    required this.id,
+    this.numericId,
+    this.label,
+    this.price,
+    this.formattedPrice,
+    this.sortOrder,
+  });
+
+  factory ProductCustomizableOptionPrice.fromJson(Map<String, dynamic> json) {
+    return ProductCustomizableOptionPrice(
+      id: json['id']?.toString() ?? json['_id']?.toString() ?? '',
+      numericId: ProductModel._parseInt(json['_id']),
+      label: json['label']?.toString(),
+      price: ProductModel._parseDouble(json['price']),
+      formattedPrice: json['formattedPrice']?.toString(),
+      sortOrder: ProductModel._parseInt(
+        json['sortOrder'] ?? json['sort_order'],
+      ),
+    );
+  }
+
+  String get displayLabel {
+    final name = label?.trim() ?? '';
+    final priceLabel = formattedPrice?.trim() ?? '';
+    if (name.isEmpty) return priceLabel;
+    if (priceLabel.isEmpty) return name;
+    return '$name + $priceLabel';
   }
 }
 

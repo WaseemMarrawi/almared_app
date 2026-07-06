@@ -18,6 +18,7 @@ import '../../../category/data/models/product_model.dart';
 import '../bloc/product_detail_bloc.dart';
 import 'product_booking_options_section.dart';
 import 'product_bundle_options_section.dart';
+import 'product_customizable_options_section.dart';
 import 'product_grouped_products_section.dart';
 
 /// Attributes section: Size swatches, Color swatches, Text swatches,
@@ -76,6 +77,11 @@ class ProductAttributesSection extends StatelessWidget {
 
                 // ── Quantity Picker ──
                 _buildQuantityPicker(context, state.quantity),
+              ],
+
+              if (product.customizableOptions.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                ProductCustomizableOptionsSection(product: product),
               ],
 
               if (product.isDownloadable &&
@@ -645,16 +651,16 @@ class ProductAttributesSection extends StatelessWidget {
 
     // Build share text and URL
     final base = Uri.parse(bagistoEndpoint).origin;
-    final String shareUrl =
-        '$base/${product.urlKey ?? ''}';
+    final String shareUrl = '$base/${product.urlKey ?? ''}';
 
     // Use share_plus to share the product
     final box = context.findRenderObject() as RenderBox?;
     Share.share(
       shareUrl,
       subject: product.name,
-      sharePositionOrigin:
-          box != null ? box.localToGlobal(Offset.zero) & box.size : Rect.zero,
+      sharePositionOrigin: box != null
+          ? box.localToGlobal(Offset.zero) & box.size
+          : Rect.zero,
     );
   }
 
@@ -862,9 +868,7 @@ class ProductAttributesSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(l10n.accountDownloadWillStartShortly),
-              ),
+              Expanded(child: Text(l10n.accountDownloadWillStartShortly)),
             ],
           ),
           duration: const Duration(seconds: 30),

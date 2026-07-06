@@ -47,21 +47,33 @@ class CartModel {
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
       id: _parseInt(json['id']),
-      cartToken: json['cartToken'] as String?,
-      subtotal: _parseDouble(json['subtotal']),
-      formattedSubtotal: json['formattedSubtotal'] as String?,
-      taxAmount: _parseDouble(json['taxAmount']),
-      formattedTaxAmount: json['formattedTaxAmount'] as String?,
-      shippingAmount: _parseDouble(json['shippingAmount']),
-      formattedShippingAmount: json['formattedShippingAmount'] as String?,
-      grandTotal: _parseDouble(json['grandTotal']),
-      formattedGrandTotal: json['formattedGrandTotal'] as String?,
-      discountAmount: _parseDouble(json['discountAmount']),
-      formattedDiscountAmount: json['formattedDiscountAmount'] as String?,
-      couponCode: json['couponCode'] as String?,
-      itemsCount: _parseInt(json['itemsCount']),
-      itemsQty: _parseInt(json['itemsQty']),
-      isGuest: json['isGuest'] as bool? ?? true,
+      cartToken: _read(json, 'cartToken', 'cart_token') as String?,
+      subtotal: _parseDouble(_read(json, 'subtotal', 'sub_total')),
+      formattedSubtotal:
+          _read(json, 'formattedSubtotal', 'formatted_sub_total') as String?,
+      taxAmount: _parseDouble(_read(json, 'taxAmount', 'tax_total')),
+      formattedTaxAmount:
+          _read(json, 'formattedTaxAmount', 'formatted_tax_total') as String?,
+      shippingAmount: _parseDouble(
+        _read(json, 'shippingAmount', 'shipping_amount'),
+      ),
+      formattedShippingAmount:
+          _read(json, 'formattedShippingAmount', 'formatted_shipping_amount')
+              as String?,
+      grandTotal: _parseDouble(_read(json, 'grandTotal', 'grand_total')),
+      formattedGrandTotal:
+          _read(json, 'formattedGrandTotal', 'formatted_grand_total')
+              as String?,
+      discountAmount: _parseDouble(
+        _read(json, 'discountAmount', 'discount_amount'),
+      ),
+      formattedDiscountAmount:
+          _read(json, 'formattedDiscountAmount', 'formatted_discount_amount')
+              as String?,
+      couponCode: _read(json, 'couponCode', 'coupon_code') as String?,
+      itemsCount: _parseInt(_read(json, 'itemsCount', 'items_count')),
+      itemsQty: _parseInt(_read(json, 'itemsQty', 'items_qty')),
+      isGuest: _parseBool(_read(json, 'isGuest', 'is_guest')) ?? true,
       items: _parseItems(json['items']),
     );
   }
@@ -125,11 +137,41 @@ class CartModel {
 
   static List<CartItemModel> _parseItems(dynamic json) {
     if (json == null) return [];
-    final edges = json['edges'] as List<dynamic>?;
-    if (edges == null) return [];
-    return edges
-        .map((e) => CartItemModel.fromJson(e['node'] as Map<String, dynamic>))
-        .toList();
+    if (json is Map<String, dynamic>) {
+      final edges = json['edges'] as List<dynamic>?;
+      if (edges == null) return [];
+      return edges
+          .map((e) => CartItemModel.fromJson(e['node'] as Map<String, dynamic>))
+          .toList();
+    }
+    if (json is List) {
+      return json
+          .whereType<Map<String, dynamic>>()
+          .map(CartItemModel.fromJson)
+          .toList();
+    }
+    return [];
+  }
+
+  static dynamic _read(
+    Map<String, dynamic> json,
+    String camelKey,
+    String snakeKey,
+  ) {
+    if (json.containsKey(camelKey)) return json[camelKey];
+    return json[snakeKey];
+  }
+
+  static bool? _parseBool(dynamic value) {
+    if (value == null) return null;
+    if (value is bool) return value;
+    if (value is int) return value == 1;
+    if (value is String) {
+      final normalized = value.toLowerCase().trim();
+      if (normalized == '1' || normalized == 'true') return true;
+      if (normalized == '0' || normalized == 'false') return false;
+    }
+    return null;
   }
 
   static double _parseDouble(dynamic value) {
@@ -185,21 +227,33 @@ class CartItemModel {
   });
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
+    final baseImageValue = CartModel._read(json, 'baseImage', 'base_image');
     return CartItemModel(
       id: CartModel._parseInt(json['id']),
-      cartId: CartModel._parseInt(json['cartId']),
-      productId: CartModel._parseInt(json['productId']),
+      cartId: CartModel._parseInt(CartModel._read(json, 'cartId', 'cart_id')),
+      productId: CartModel._parseInt(
+        CartModel._read(json, 'productId', 'product_id'),
+      ),
       name: json['name'] as String? ?? '',
       price: CartModel._parseDouble(json['price']),
-      formattedPrice: json['formattedPrice'] as String?,
+      formattedPrice:
+          CartModel._read(json, 'formattedPrice', 'formatted_price') as String?,
       total: CartModel._parseDouble(json['total']),
-      formattedTotal: json['formattedTotal'] as String?,
-      baseImage: json['baseImage'] as String?,
+      formattedTotal:
+          CartModel._read(json, 'formattedTotal', 'formatted_total') as String?,
+      baseImage: baseImageValue is String
+          ? baseImageValue
+          : (baseImageValue == null ? null : jsonEncode(baseImageValue)),
       sku: json['sku'] as String?,
       quantity: CartModel._parseInt(json['quantity']),
       type: json['type'] as String?,
-      productUrlKey: json['productUrlKey'] as String?,
-      canChangeQty: json['canChangeQty'] as bool? ?? true,
+      productUrlKey:
+          CartModel._read(json, 'productUrlKey', 'product_url_key') as String?,
+      canChangeQty:
+          CartModel._parseBool(
+            CartModel._read(json, 'canChangeQty', 'can_change_qty'),
+          ) ??
+          true,
       options: _parseOptions(json['options']),
     );
   }
@@ -221,7 +275,8 @@ class CartItemModel {
   /// Total price for this item (price * quantity)
   double get totalPrice => price * quantity;
 
-  String get displayPrice => formattedPrice ?? CurrencyFormatter.formatAmount(price);
+  String get displayPrice =>
+      formattedPrice ?? CurrencyFormatter.formatAmount(price);
 
   String get displayTotal =>
       formattedTotal ??
@@ -275,16 +330,18 @@ class CartItemModel {
 
       // Try attributeName + optionLabel pattern
       // (e.g. {"attributeName": "Booking From", "optionLabel": "28th Mar, 2026"})
-      final attrName = (value['attributeName'] ??
-              value['attribute_name'] ??
-              value['attributename'])
-          ?.toString()
-          .trim();
-      final optLabel = (value['optionLabel'] ??
-              value['option_label'] ??
-              value['optionlabel'])
-          ?.toString()
-          .trim();
+      final attrName =
+          (value['attributeName'] ??
+                  value['attribute_name'] ??
+                  value['attributename'])
+              ?.toString()
+              .trim();
+      final optLabel =
+          (value['optionLabel'] ??
+                  value['option_label'] ??
+                  value['optionlabel'])
+              ?.toString()
+              .trim();
 
       if ((attrName ?? '').isNotEmpty && (optLabel ?? '').isNotEmpty) {
         return <String>['$attrName : $optLabel'];
@@ -298,7 +355,9 @@ class CartItemModel {
             k == 'optionId' ||
             k == 'option_id' ||
             k == 'optionid' ||
-            k == 'id') return;
+            k == 'id') {
+          return;
+        }
 
         final entryFormatted = _formatOptionValue(entryValue);
         if (entryFormatted.isNotEmpty &&
