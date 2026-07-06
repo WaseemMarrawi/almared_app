@@ -1,5 +1,13 @@
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below
 
+# CHANGELOG for v2.4.6
+
+## **v2.4.6 (6th of July, 2026)** - *Release*
+
+* [Enhancement] Added product customizable options support on product detail pages, including dynamic controls for text, textarea, checkbox, radio, select, multiselect, date, datetime, and time options.
+* [Improvement] Improved add-to-cart handling so supported customizable options are included across simple, configurable, grouped, bundle, downloadable, and booking product flows.
+* [Known Limitation] The File customizable option type is not supported yet because the Bagisto API does not currently support it for mobile app implementation. Once Bagisto API support is available, this option type will be implemented as well.
+
 # CHANGELOG for v2.4.5
 
 ## **v2.4.5 (26th of May, 2026)** - *Release*
