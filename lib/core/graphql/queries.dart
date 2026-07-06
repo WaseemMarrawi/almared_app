@@ -266,6 +266,36 @@ class ProductQueries {
           }
         }
       }
+      customizableOptions {
+        edges {
+          node {
+            id
+            _id
+            type
+            isRequired
+            maxCharacters
+            supportedFileExtensions
+            sortOrder
+            translation {
+              id
+              locale
+              label
+            }
+            customizableOptionPrices {
+              edges {
+                node {
+                  id
+                  _id
+                  label
+                  price
+                  formattedPrice
+                  sortOrder
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ''';
 
@@ -882,6 +912,36 @@ $slotFields
           }
         }
       }
+      customizableOptions {
+        edges {
+          node {
+            id
+            _id
+            type
+            isRequired
+            maxCharacters
+            supportedFileExtensions
+            sortOrder
+            translation {
+              id
+              locale
+              label
+            }
+            customizableOptionPrices {
+              edges {
+                node {
+                  id
+                  _id
+                  label
+                  price
+                  formattedPrice
+                  sortOrder
+                }
+              }
+            }
+          }
+        }
+      }
       downloadableLinks {
         edges {
           node {
@@ -1285,12 +1345,14 @@ class CartMutations {
       $cartId: Int
       $productId: Int!
       $quantity: Int!
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
           cartId: $cartId
           productId: $productId
           quantity: $quantity
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {
@@ -1311,6 +1373,7 @@ class CartMutations {
       $quantity: Int!
       $selectedConfigurableOption: Int!
       $superAttribute: Iterable
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
@@ -1319,6 +1382,7 @@ class CartMutations {
           quantity: $quantity
           selectedConfigurableOption: $selectedConfigurableOption
           superAttribute: $superAttribute
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {
@@ -1338,6 +1402,7 @@ class CartMutations {
       $productId: Int!
       $quantity: Int!
       $links: Iterable
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
@@ -1345,6 +1410,7 @@ class CartMutations {
           productId: $productId
           quantity: $quantity
           links: $links
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {
@@ -1365,6 +1431,7 @@ class CartMutations {
       $productId: Int!
       $quantity: Int!
       $groupedQty: String
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
@@ -1372,6 +1439,7 @@ class CartMutations {
           productId: $productId
           quantity: $quantity
           groupedQty: $groupedQty
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {
@@ -1393,6 +1461,7 @@ class CartMutations {
       $quantity: Int!
       $bundleOptions: String
       $bundleOptionQty: String
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
@@ -1401,6 +1470,7 @@ class CartMutations {
           quantity: $quantity
           bundleOptions: $bundleOptions
           bundleOptionQty: $bundleOptionQty
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {
@@ -1422,6 +1492,7 @@ class CartMutations {
       $booking: String!
       $quantity: Int
       $specialNote: String
+      $customizableOptions: Iterable
     ) {
       createAddProductInCart(
         input: {
@@ -1430,6 +1501,7 @@ class CartMutations {
           quantity: $quantity
           booking: $booking
           bookingNote: $specialNote
+          customizableOptions: $customizableOptions
         }
       ) {
         addProductInCart {

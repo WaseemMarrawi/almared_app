@@ -129,6 +129,16 @@ class UpdateBookingField extends ProductDetailEvent {
   List<Object?> get props => [key, value];
 }
 
+class UpdateCustomizableOption extends ProductDetailEvent {
+  final String optionId;
+  final dynamic value;
+
+  const UpdateCustomizableOption({required this.optionId, required this.value});
+
+  @override
+  List<Object?> get props => [optionId, value];
+}
+
 class UpdateBookingTicketQuantity extends ProductDetailEvent {
   final String ticketId;
   final int quantity;
@@ -162,14 +172,14 @@ class ProductDetailState extends Equatable {
   selectedAttributes; // code -> selectionId (optionId or label)
   final ProductVariant?
   selectedVariant; // matched variant for current selection (legacy)
-  final int?
-  selectedVariantId; // variant ID from combinations (new API)
+  final int? selectedVariantId; // variant ID from combinations (new API)
   final List<String> selectedDownloadableLinks; // list of link IDs
   final int quantity;
   final Map<String, int> groupedQuantities;
   final Map<String, List<String>> selectedBundleOptions;
   final Map<String, int> bundleOptionQuantities;
   final Map<String, dynamic> bookingForm;
+  final Map<String, dynamic> customizableOptionValues;
   final Map<String, int> bookingTicketQuantities;
   final List<BookingSlotOption> bookingSlots;
   final bool isBookingSlotsLoading;
@@ -191,6 +201,7 @@ class ProductDetailState extends Equatable {
     this.selectedBundleOptions = const {},
     this.bundleOptionQuantities = const {},
     this.bookingForm = const {},
+    this.customizableOptionValues = const {},
     this.bookingTicketQuantities = const {},
     this.bookingSlots = const [],
     this.isBookingSlotsLoading = false,
@@ -226,6 +237,7 @@ class ProductDetailState extends Equatable {
     Map<String, List<String>>? selectedBundleOptions,
     Map<String, int>? bundleOptionQuantities,
     Map<String, dynamic>? bookingForm,
+    Map<String, dynamic>? customizableOptionValues,
     Map<String, int>? bookingTicketQuantities,
     List<BookingSlotOption>? bookingSlots,
     bool? isBookingSlotsLoading,
@@ -255,6 +267,8 @@ class ProductDetailState extends Equatable {
       bundleOptionQuantities:
           bundleOptionQuantities ?? this.bundleOptionQuantities,
       bookingForm: bookingForm ?? this.bookingForm,
+      customizableOptionValues:
+          customizableOptionValues ?? this.customizableOptionValues,
       bookingTicketQuantities:
           bookingTicketQuantities ?? this.bookingTicketQuantities,
       bookingSlots: bookingSlots ?? this.bookingSlots,
@@ -284,6 +298,7 @@ class ProductDetailState extends Equatable {
     selectedBundleOptions,
     bundleOptionQuantities,
     bookingForm,
+    customizableOptionValues,
     bookingTicketQuantities,
     bookingSlots,
     isBookingSlotsLoading,
@@ -310,6 +325,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     on<SelectBundleOptionProduct>(_onSelectBundleOptionProduct);
     on<UpdateBundleOptionProductQuantity>(_onUpdateBundleOptionProductQuantity);
     on<UpdateBookingField>(_onUpdateBookingField);
+    on<UpdateCustomizableOption>(_onUpdateCustomizableOption);
     on<UpdateBookingTicketQuantity>(_onUpdateBookingTicketQuantity);
     on<LoadBookingSlots>(_onLoadBookingSlots);
     on<ToggleDescriptionExpanded>(_onToggleDescriptionExpanded);
@@ -356,6 +372,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
           selectedBundleOptions: _defaultBundleSelections(product),
           bundleOptionQuantities: _defaultBundleQuantities(product),
           bookingForm: _defaultBookingForm(product),
+          customizableOptionValues: const {},
           bookingTicketQuantities: _defaultBookingTicketQuantities(product),
           bookingSlots: const [],
           isBookingSlotsLoading: false,
@@ -416,6 +433,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
           selectedBundleOptions: _defaultBundleSelections(product),
           bundleOptionQuantities: _defaultBundleQuantities(product),
           bookingForm: _defaultBookingForm(product),
+          customizableOptionValues: const {},
           bookingTicketQuantities: _defaultBookingTicketQuantities(product),
           bookingSlots: const [],
           isBookingSlotsLoading: false,
@@ -612,6 +630,24 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
       updated[event.ticketId] = event.quantity;
     }
     emit(state.copyWith(bookingTicketQuantities: updated));
+  }
+
+  void _onUpdateCustomizableOption(
+    UpdateCustomizableOption event,
+    Emitter<ProductDetailState> emit,
+  ) {
+    final updated = Map<String, dynamic>.from(state.customizableOptionValues);
+    final value = event.value;
+
+    final isEmptyList = value is List && value.isEmpty;
+    final isEmptyString = value is String && value.trim().isEmpty;
+    if (value == null || isEmptyList || isEmptyString) {
+      updated.remove(event.optionId);
+    } else {
+      updated[event.optionId] = value;
+    }
+
+    emit(state.copyWith(customizableOptionValues: updated));
   }
 
   Future<void> _onLoadBookingSlots(

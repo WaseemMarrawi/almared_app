@@ -5,8 +5,16 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../../../core/error/error_mapper.dart';
 import '../../../../core/graphql/graphql_client.dart';
 import '../../../../core/graphql/queries.dart';
+import '../../../product/domain/models/customizable_file_selection.dart';
 
 import '../models/cart_model.dart';
+
+class AddToCartRequest {
+  final String mutation;
+  final Map<String, dynamic> variables;
+
+  const AddToCartRequest({required this.mutation, required this.variables});
+}
 
 /// Repository for all cart operations via Bagisto GraphQL API.
 ///
@@ -88,12 +96,76 @@ class CartRepository {
     Map<String, dynamic>? bookingData,
     int? selectedConfigurableOption,
     List<Map<String, dynamic>>? superAttribute,
+    Map<String, dynamic>? customizableOptions,
   }) async {
     debugPrint(
       '[CartRepo] addToCart: productId=$productId, qty=$quantity, '
       'links=$downloadableLinks, groupedItems=$groupedItems, bundleOptions=$bundleOptions, '
-      'bookingData=$bookingData, configurableOption=$selectedConfigurableOption, superAttribute=$superAttribute',
+      'bookingData=$bookingData, configurableOption=$selectedConfigurableOption, '
+      'superAttribute=$superAttribute, customizableOptions=$customizableOptions',
     );
+
+    final request = buildAddToCartRequest(
+      cartId: cartId,
+      productId: productId,
+      quantity: quantity,
+      downloadableLinks: downloadableLinks,
+      groupedItems: groupedItems,
+      bundleOptions: bundleOptions,
+      bookingData: bookingData,
+      selectedConfigurableOption: selectedConfigurableOption,
+      superAttribute: superAttribute,
+      customizableOptions: customizableOptions,
+    );
+
+    debugPrint('[CartRepo] addToCart mutation: ${request.mutation}');
+    debugPrint('[CartRepo] addToCart variables: ${request.variables}');
+
+    final result = await _authedClient.mutate(
+      MutationOptions(
+        document: gql(request.mutation),
+        variables: request.variables,
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    if (result.hasException) {
+      debugPrint('[CartRepo] addToCart error: ${result.exception}');
+      if (result.exception?.graphqlErrors.isNotEmpty == true) {
+        for (final error in result.exception!.graphqlErrors) {
+          debugPrint('[CartRepo] GraphQL error: ${error.message}');
+        }
+      }
+      if (result.exception?.linkException != null) {
+        debugPrint('[CartRepo] Link error: ${result.exception!.linkException}');
+      }
+      debugPrint('[CartRepo] addToCart raw data on error: ${result.data}');
+      throw result.exception!;
+    }
+
+    final data = result.data?['createAddProductInCart']?['addProductInCart'];
+    if (data == null) {
+      debugPrint('[CartRepo] addToCart null payload: ${result.data}');
+      throw Exception('Failed to add product to cart');
+    }
+
+    debugPrint('[CartRepo] addToCart response: $data');
+    debugPrint('[CartRepo] addToCart success: ${data['message']}');
+    return CartModel.fromJson(data as Map<String, dynamic>);
+  }
+
+  static AddToCartRequest buildAddToCartRequest({
+    int? cartId,
+    required int productId,
+    required int quantity,
+    List<String>? downloadableLinks,
+    List<Map<String, int>>? groupedItems,
+    List<Map<String, dynamic>>? bundleOptions,
+    Map<String, dynamic>? bookingData,
+    int? selectedConfigurableOption,
+    List<Map<String, dynamic>>? superAttribute,
+    Map<String, dynamic>? customizableOptions,
+  }) {
     final Map<String, dynamic> variables = {
       'productId': productId,
       'quantity': quantity,
@@ -122,7 +194,9 @@ class CartRepository {
       variables['bundleOptionQty'] = jsonEncode(bundlePayload['qty']);
     } else if (groupedItems != null && groupedItems.isNotEmpty) {
       mutation = CartMutations.addGroupedProductToCart;
-      variables['groupedQty'] = jsonEncode(_buildGroupedQtyPayload(groupedItems));
+      variables['groupedQty'] = jsonEncode(
+        _buildGroupedQtyPayload(groupedItems),
+      );
     } else if (downloadableLinks != null && downloadableLinks.isNotEmpty) {
       mutation = CartMutations.addDownloadableProductToCart;
       variables['links'] = downloadableLinks
@@ -137,45 +211,40 @@ class CartRepository {
       variables['cartId'] = cartId;
     }
 
-    debugPrint('[CartRepo] addToCart mutation: $mutation');
-    debugPrint('[CartRepo] addToCart variables: $variables');
-
-    final result = await _authedClient.mutate(
-      MutationOptions(
-        document: gql(mutation),
-        variables: variables,
-        fetchPolicy: FetchPolicy.noCache,
-      ),
-    );
-
-    if (result.hasException) {
-      debugPrint('[CartRepo] addToCart error: ${result.exception}');
-      if (result.exception?.graphqlErrors.isNotEmpty == true) {
-        for (final error in result.exception!.graphqlErrors) {
-          debugPrint('[CartRepo] GraphQL error: ${error.message}');
-        }
-      }
-      if (result.exception?.linkException != null) {
-        debugPrint(
-          '[CartRepo] Link error: ${result.exception!.linkException}',
-        );
-      }
-      debugPrint('[CartRepo] addToCart raw data on error: ${result.data}');
-      throw result.exception!;
+    if (customizableOptions != null && customizableOptions.isNotEmpty) {
+      variables['customizableOptions'] = serializeCustomizableOptionsForGraphQl(
+        customizableOptions,
+      );
     }
 
-    final data = result.data?['createAddProductInCart']?['addProductInCart'];
-    if (data == null) {
-      debugPrint('[CartRepo] addToCart null payload: ${result.data}');
-      throw Exception('Failed to add product to cart');
-    }
-
-    debugPrint('[CartRepo] addToCart response: $data');
-    debugPrint('[CartRepo] addToCart success: ${data['message']}');
-    return CartModel.fromJson(data as Map<String, dynamic>);
+    return AddToCartRequest(mutation: mutation, variables: variables);
   }
 
-  Map<String, Map<String, dynamic>> _buildBundlePayload(
+  static Map<String, dynamic> serializeCustomizableOptionsForGraphQl(
+    Map<String, dynamic> customizableOptions,
+  ) {
+    return customizableOptions.map(
+      (key, value) => MapEntry(key, _serializeCustomizableOptionValue(value)),
+    );
+  }
+
+  static dynamic _serializeCustomizableOptionValue(dynamic value) {
+    if (value is CustomizableFileSelection) return value.name;
+    if (value is List) {
+      return value.map(_serializeCustomizableOptionValue).toList();
+    }
+    if (value is Map) {
+      return value.map(
+        (key, itemValue) => MapEntry(
+          key.toString(),
+          _serializeCustomizableOptionValue(itemValue),
+        ),
+      );
+    }
+    return value;
+  }
+
+  static Map<String, Map<String, dynamic>> _buildBundlePayload(
     List<Map<String, dynamic>> bundleOptions,
   ) {
     final Map<String, List<int>> options = {};
@@ -186,11 +255,12 @@ class CartRepository {
       if (optionId <= 0) continue;
 
       final optionKey = optionId.toString();
-      final selectedIds = (option['bundleOptionProductId'] as List<dynamic>? ??
-              const <dynamic>[])
-          .map((id) => int.tryParse('$id') ?? 0)
-          .where((id) => id > 0)
-          .toList();
+      final selectedIds =
+          (option['bundleOptionProductId'] as List<dynamic>? ??
+                  const <dynamic>[])
+              .map((id) => int.tryParse('$id') ?? 0)
+              .where((id) => id > 0)
+              .toList();
 
       if (selectedIds.isEmpty) continue;
 
@@ -206,13 +276,12 @@ class CartRepository {
       qty[optionKey] = selectedQty > 0 ? selectedQty : 1;
     }
 
-    return {
-      'options': options,
-      'qty': qty,
-    };
+    return {'options': options, 'qty': qty};
   }
 
-  Map<String, dynamic> _buildBookingPayload(Map<String, dynamic> bookingData) {
+  static Map<String, dynamic> _buildBookingPayload(
+    Map<String, dynamic> bookingData,
+  ) {
     final type = bookingData['type']?.toString().toLowerCase().trim() ?? '';
     final Map<String, dynamic> booking = {'type': type};
 
@@ -242,13 +311,12 @@ class CartRepository {
         break;
     }
 
-    return {
-      'booking': booking,
-      'specialNote': bookingData['specialNote'],
-    };
+    return {'booking': booking, 'specialNote': bookingData['specialNote']};
   }
 
-  Map<String, int> _buildGroupedQtyPayload(List<Map<String, int>> groupedItems) {
+  static Map<String, int> _buildGroupedQtyPayload(
+    List<Map<String, int>> groupedItems,
+  ) {
     final Map<String, int> groupedQty = {};
 
     for (final item in groupedItems) {

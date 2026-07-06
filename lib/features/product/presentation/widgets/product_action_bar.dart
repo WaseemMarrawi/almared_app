@@ -5,6 +5,7 @@ import '../../../../core/navigation/app_navigator.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../category/data/models/product_model.dart';
 import '../../../cart/presentation/bloc/cart_bloc.dart';
+import '../../domain/models/customizable_file_selection.dart';
 import '../bloc/product_detail_bloc.dart';
 
 /// Sticky bottom bar with "Add to Cart" and "Buy Now" buttons
@@ -21,8 +22,10 @@ class ProductActionBar extends StatelessWidget {
     return BlocListener<CartBloc, CartState>(
       listener: (context, cartState) {
         if (cartState.successMessage != null) {
-          final message =
-              _localizedCartMessage(context, cartState.successMessage!);
+          final message = _localizedCartMessage(
+            context,
+            cartState.successMessage!,
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(message),
@@ -141,6 +144,13 @@ class ProductActionBar extends StatelessWidget {
     final productId =
         product.numericId ?? int.tryParse(product.id.split('/').last) ?? 0;
 
+    final customizableOptions = _buildCustomizableOptionsPayload(
+      context: context,
+      product: product,
+      selections: productState.customizableOptionValues,
+    );
+    if (customizableOptions == null) return;
+
     if (product.isGrouped) {
       final groupedItems = product.groupedProducts
           .map((groupedProduct) {
@@ -171,6 +181,7 @@ class ProductActionBar extends StatelessWidget {
           productId: productId,
           quantity: 1,
           groupedItems: groupedItems,
+          customizableOptions: customizableOptions,
         ),
       );
     } else if (product.isBooking) {
@@ -203,6 +214,7 @@ class ProductActionBar extends StatelessWidget {
           productId: productId,
           quantity: 1,
           bookingData: bookingPayload,
+          customizableOptions: customizableOptions,
         ),
       );
     } else if (product.isBundle) {
@@ -267,6 +279,7 @@ class ProductActionBar extends StatelessWidget {
           productId: productId,
           quantity: 1,
           bundleOptions: bundleOptions,
+          customizableOptions: customizableOptions,
         ),
       );
     } else if (product.isConfigurable) {
@@ -293,6 +306,7 @@ class ProductActionBar extends StatelessWidget {
           AddToCart(
             productId: variantNumericId,
             quantity: productState.quantity,
+            customizableOptions: customizableOptions,
           ),
         );
         return;
@@ -320,6 +334,7 @@ class ProductActionBar extends StatelessWidget {
           quantity: productState.quantity,
           selectedConfigurableOption: variantId,
           superAttribute: superAttribute,
+          customizableOptions: customizableOptions,
         ),
       );
     } else if (product.type == 'downloadable') {
@@ -349,14 +364,121 @@ class ProductActionBar extends StatelessWidget {
           productId: productId,
           quantity: productState.quantity,
           downloadableLinks: selectedLinkIds,
+          customizableOptions: customizableOptions,
         ),
       );
     } else {
       // Simple or Virtual
       context.read<CartBloc>().add(
-        AddToCart(productId: productId, quantity: productState.quantity),
+        AddToCart(
+          productId: productId,
+          quantity: productState.quantity,
+          customizableOptions: customizableOptions,
+        ),
       );
     }
+  }
+
+  Map<String, dynamic>? _buildCustomizableOptionsPayload({
+    required BuildContext context,
+    required ProductModel product,
+    required Map<String, dynamic> selections,
+  }) {
+    if (product.customizableOptions.isEmpty) return const {};
+
+    final payload = <String, dynamic>{};
+
+    for (final option in product.customizableOptions) {
+      final optionId = _resolveProductId(option.numericId, option.id);
+      if (optionId <= 0) continue;
+
+      final value = selections[option.id];
+      final hasValue = _hasCustomizableOptionValue(value);
+      final type = option.normalizedType;
+
+      if (type == 'file') {
+        if (option.isRequired && !hasValue) {
+          _showSnackBar(context, '${option.displayLabel} is required');
+          return null;
+        }
+
+        if (!hasValue) continue;
+
+        if (value is! CustomizableFileSelection) {
+          _showSnackBar(context, 'Please select ${option.displayLabel}');
+          return null;
+        }
+
+        if (!value.isAllowedBy(option.supportedFileExtensionList)) {
+          _showSnackBar(
+            context,
+            'Please select ${option.supportedFileExtensionList.join(', ')} file',
+          );
+          return null;
+        }
+
+        payload[optionId.toString()] = [value];
+        continue;
+      }
+
+      if (option.isRequired && !hasValue) {
+        _showSnackBar(context, '${option.displayLabel} is required');
+        return null;
+      }
+
+      if (!hasValue) continue;
+
+      if (option.hasChoicePrices) {
+        final selectedValues = value is List
+            ? value.map((item) => item.toString()).toList()
+            : <String>[value.toString()];
+
+        final selectedPriceIds = selectedValues
+            .map((id) => _resolveCustomizablePriceId(option, id))
+            .where((id) => id > 0)
+            .toList();
+
+        if (option.isRequired && selectedPriceIds.isEmpty) {
+          _showSnackBar(context, '${option.displayLabel} is required');
+          return null;
+        }
+
+        if (selectedPriceIds.isNotEmpty) {
+          payload[optionId.toString()] = selectedPriceIds;
+        }
+        continue;
+      }
+
+      payload[optionId.toString()] = [value.toString().trim()];
+    }
+
+    return payload;
+  }
+
+  bool _hasCustomizableOptionValue(dynamic value) {
+    if (value == null) return false;
+    if (value is String) return value.trim().isNotEmpty;
+    if (value is List) return value.isNotEmpty;
+    return true;
+  }
+
+  int _resolveCustomizablePriceId(
+    ProductCustomizableOption option,
+    String selectedId,
+  ) {
+    for (final price in option.prices) {
+      if (price.id == selectedId || price.numericId?.toString() == selectedId) {
+        return _resolveProductId(price.numericId, price.id);
+      }
+    }
+
+    return int.tryParse(selectedId.split('/').last) ?? 0;
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+    );
   }
 
   Map<String, dynamic>? _buildBookingPayload({
