@@ -1,4 +1,4 @@
-appId: com.webkul.bagisto.mobikul
+appId: com.almared.app
 ---
 - tapOn:
     text: "^Account$"

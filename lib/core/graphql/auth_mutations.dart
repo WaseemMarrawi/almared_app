@@ -1,5 +1,5 @@
 /// GraphQL mutations for authentication
-/// Bagisto API: createCustomerLogin, createCustomer, createForgotPassword, createLogout
+/// Almared API: createCustomerLogin, createCustomer, createForgotPassword, createLogout
 
 const String loginMutation = r'''
   mutation loginCustomer($input: createCustomerLoginInput!) {

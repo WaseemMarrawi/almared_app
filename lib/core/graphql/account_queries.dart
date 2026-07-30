@@ -2,7 +2,7 @@
 // APIs: Customer Profile, Customer Addresses, Product Reviews
 //
 // Note: Orders and Wishlist queries are NOT available in the
-// Bagisto demo storefront GraphQL schema. The dashboard gracefully
+// Almared demo storefront GraphQL schema. The dashboard gracefully
 // shows empty states for those sections.
 
 class AccountQueries {
@@ -96,7 +96,7 @@ class AccountQueries {
   ''';
 
   /// Get customer reviews (cursor-based pagination) with product data.
-  /// Bagisto API query: customerReviews(first: Int, after: String)
+  /// Almared API query: customerReviews(first: Int, after: String)
   /// Returns review with nested product (name, sku, type, images) for UI display.
   static const String getCustomerReviews = r'''
     query getCustomerReviews($first: Int, $after: String) {
@@ -148,7 +148,7 @@ class AccountQueries {
   // ─── Address Mutations ───
 
   /// Set address as default using createAddUpdateCustomerAddress mutation.
-  /// The Bagisto API uses the same mutation for create/update with addressId + defaultAddress.
+  /// The Almared API uses the same mutation for create/update with addressId + defaultAddress.
   /// Note: This requires the full address data, so we use createAddUpdateCustomerAddress
   /// with addressId and defaultAddress: true.
   static const String setDefaultAddress = r'''
@@ -175,7 +175,7 @@ class AccountQueries {
   ''';
 
   /// Delete customer address
-  /// Bagisto API mutation: createDeleteCustomerAddress(input: createDeleteCustomerAddressInput!)
+  /// Almared API mutation: createDeleteCustomerAddress(input: createDeleteCustomerAddressInput!)
   static const String deleteCustomerAddress = r'''
     mutation deleteCustomerAddress($input: createDeleteCustomerAddressInput!) {
       createDeleteCustomerAddress(input: $input) {
@@ -187,7 +187,7 @@ class AccountQueries {
   ''';
 
   /// Add/update a customer address
-  /// Discovered via schema introspection on api-demo.bagisto.com:
+  /// Discovered via schema introspection on api-demo.almared.com:
   ///   mutation: createAddUpdateCustomerAddress
   ///   input type: createAddUpdateCustomerAddressInput
   ///   Fields: addressId (Int, optional — omit for create),
@@ -220,7 +220,7 @@ class AccountQueries {
   // ─── Profile Mutations ───
 
   /// Update customer profile
-  /// Bagisto API mutation: updateCustomerProfile
+  /// Almared API mutation: updateCustomerProfile
   /// Input: firstName, lastName, phone, gender, dateOfBirth, subscribedToNewsLetter
   static const String updateCustomerProfile = r'''
     mutation createCustomerProfileUpdate($input: createCustomerProfileUpdateInput!) {
@@ -233,7 +233,7 @@ class AccountQueries {
   ''';
 
   /// Change customer email — requires current password for verification
-  /// Bagisto API mutation: updateCustomerProfile with email + currentPassword
+  /// Almared API mutation: updateCustomerProfile with email + currentPassword
   static const String changeCustomerEmail = r'''
     mutation createCustomerProfileUpdate($input: createCustomerProfileUpdateInput!) {
       createCustomerProfileUpdate(input: $input) {
@@ -245,7 +245,7 @@ class AccountQueries {
   ''';
 
   /// Change customer password — requires current + new password
-  /// Bagisto API mutation: updateCustomerProfile with password fields
+  /// Almared API mutation: updateCustomerProfile with password fields
   static const String changeCustomerPassword = r'''
     mutation createCustomerProfileUpdate($input: createCustomerProfileUpdateInput!) {
       createCustomerProfileUpdate(input: $input) {
@@ -257,7 +257,7 @@ class AccountQueries {
   ''';
 
   /// Delete customer account — requires current password for verification
-  /// Bagisto API mutation: deleteCustomerAccount
+  /// Almared API mutation: deleteCustomerAccount
   static const String deleteCustomerAccount = r'''
     mutation createCustomerProfileDelete($input: createCustomerProfileDeleteInput!) {
       createCustomerProfileDelete(input: $input) {
@@ -270,7 +270,7 @@ class AccountQueries {
   ''';
 
   /// Get available countries for address form (cursor-paginated).
-  /// Bagisto API: countries(first: Int, after: String)
+  /// Almared API: countries(first: Int, after: String)
   /// Returns: CountryCursorConnection { edges { node { ... } } }
   /// We request first=260 to get all countries in one call.
   static const String getCountries = r'''
@@ -289,7 +289,7 @@ class AccountQueries {
   ''';
 
   /// Get states/provinces for a specific country (cursor-paginated).
-  /// Bagisto API: countryStates(countryId: Int!, first: Int)
+  /// Almared API: countryStates(countryId: Int!, first: Int)
   /// Returns: CountryStateCursorConnection { edges { node { ... } } }
   /// We request first=200 to get all states in one call.
   static const String getCountryStates = r'''
@@ -312,7 +312,7 @@ class AccountQueries {
   // ─── Wishlist Queries & Mutations ───
 
   /// Get wishlists (cursor-paginated).
-  /// Bagisto API: wishlists(first: Int, after: String)
+  /// Almared API: wishlists(first: Int, after: String)
   /// Returns: WishlistCursorConnection { edges { node { ... } }, pageInfo, totalCount }
   static const String getWishlists = r'''
     query GetAllWishlists($first: Int, $after: String) {
@@ -363,7 +363,7 @@ class AccountQueries {
   ''';
 
   /// Delete a wishlist item.
-  /// Bagisto API mutation: deleteWishlist(input: deleteWishlistInput!)
+  /// Almared API mutation: deleteWishlist(input: deleteWishlistInput!)
   static const String deleteWishlist = r'''
     mutation DeleteWishlist($input: deleteWishlistInput!) {
       deleteWishlist(input: $input) {
@@ -376,7 +376,7 @@ class AccountQueries {
   ''';
 
   /// Move a wishlist item to cart.
-  /// Bagisto API mutation: moveWishlistToCart(input: moveWishlistToCartInput!)
+  /// Almared API mutation: moveWishlistToCart(input: moveWishlistToCartInput!)
   static const String moveWishlistToCart = r'''
     mutation MoveWishlistToCart($input: moveWishlistToCartInput!) {
       moveWishlistToCart(input: $input) {
@@ -392,7 +392,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Get compare items (cursor-paginated).
-  /// Bagisto API query: compareItems(first: Int, after: String)
+  /// Almared API query: compareItems(first: Int, after: String)
   /// Returns: CompareItemCursorConnection
   static const String getCompareItems = r'''
     query GetCompareItems($first: Int, $after: String) {
@@ -438,7 +438,7 @@ class AccountQueries {
   ''';
 
   /// Delete a single compare item.
-  /// Bagisto API mutation: deleteCompareItem(input: deleteCompareItemInput!)
+  /// Almared API mutation: deleteCompareItem(input: deleteCompareItemInput!)
   static const String deleteCompareItem = r'''
     mutation DeleteCompareItem($id: ID!) {
       deleteCompareItem(input: {id: $id}) {
@@ -455,7 +455,7 @@ class AccountQueries {
   ''';
 
   /// Delete all compare items.
-  /// Bagisto API mutation: createDeleteAllCompareItems(input: {})
+  /// Almared API mutation: createDeleteAllCompareItems(input: {})
   static const String deleteAllCompareItems = r'''
     mutation createDeleteAllCompareItems {
       createDeleteAllCompareItems(input: {}) {
@@ -471,7 +471,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Add product to wishlist.
-  /// Bagisto API mutation: createWishlist(input: createWishlistInput!)
+  /// Almared API mutation: createWishlist(input: createWishlistInput!)
   static const String createWishlist = r'''
     mutation CreateWishlist($input: createWishlistInput!) {
       createWishlist(input: $input) {
@@ -494,7 +494,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Add product to compare list.
-  /// Bagisto API mutation: createCompareItem(input: createCompareItemInput!)
+  /// Almared API mutation: createCompareItem(input: createCompareItemInput!)
   static const String createCompareItem = r'''
     mutation CreateCompareItem($input: createCompareItemInput!) {
       createCompareItem(input: $input) {
@@ -519,7 +519,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Get customer orders (cursor-based pagination).
-  /// Bagisto API query: customerOrders(first: Int, after: String, status: String)
+  /// Almared API query: customerOrders(first: Int, after: String, status: String)
   /// Returns: CustomerOrderCursorConnection
   static const String getCustomerOrders = r'''
     query getCustomerOrders($first: Int, $after: String, $status: String) {
@@ -563,9 +563,9 @@ class AccountQueries {
   ''';
 
   /// Get a single customer order detail by ID.
-  /// Bagisto API query: customerOrder(id: ID!)
+  /// Almared API query: customerOrder(id: ID!)
   /// The id is the IRI format (e.g. "/api/shop/customer-orders/1").
-  /// Note: The Bagisto storefront schema only exposes flat scalar fields
+  /// Note: The Almared storefront schema only exposes flat scalar fields
   /// on CustomerOrder — no nested items/addresses/payment/invoices/shipments.
   static const String getCustomerOrder = r'''
     query getCustomerOrder($id: ID!) {
@@ -659,7 +659,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Create a product review.
-  /// Bagisto API mutation: createProductReview(input: createProductReviewInput!)
+  /// Almared API mutation: createProductReview(input: createProductReviewInput!)
   /// Required: productId, title, comment, rating, name
   /// Optional: email, status, attachments, clientMutationId
   static const String createProductReview = r'''
@@ -685,7 +685,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Get customer invoices with items (cursor-based pagination).
-  /// Bagisto API query: customerInvoices(first: Int, after: String, orderId: Int, state: String)
+  /// Almared API query: customerInvoices(first: Int, after: String, orderId: Int, state: String)
   /// Returns: CustomerInvoiceCursorConnection with items
   static const String getCustomerInvoices = r'''
     query getCustomerInvoices($first: Int, $after: String, $orderId: Int, $state: String) {
@@ -759,7 +759,7 @@ class AccountQueries {
   ''';
 
   /// Get a single customer invoice detail by ID with items.
-  /// Bagisto API query: customerInvoice(id: ID!)
+  /// Almared API query: customerInvoice(id: ID!)
   /// The id is the IRI format (e.g. "/api/shop/customer-invoices/1").
   static const String getCustomerInvoice = r'''
     query getCustomerInvoice($id: ID!) {
@@ -834,7 +834,7 @@ class AccountQueries {
   // ──────────────────────────────────────────────
 
   /// Reorder an existing order.
-  /// Bagisto API mutation: createReorderOrder(input: reorderOrderInput!)
+  /// Almared API mutation: createReorderOrder(input: reorderOrderInput!)
   /// Required: orderId (Int)
   /// Returns: success, message, orderId, itemsAddedCount
   static const String reorderOrder = r'''
@@ -855,7 +855,7 @@ mutation createReorderOrder($input: createReorderOrderInput!) {
   // ──────────────────────────────────────────────
 
   /// Get customer order shipments (cursor-based pagination).
-  /// Bagisto API query: customerOrderShipments(orderId: Int!)
+  /// Almared API query: customerOrderShipments(orderId: Int!)
   /// Returns: CustomerOrderShipmentCursorConnection with items
   static const String getCustomerOrderShipments = r'''
     query getOrderShipments($orderId: Int!) {
@@ -888,7 +888,7 @@ mutation createReorderOrder($input: createReorderOrderInput!) {
   ''';
 
   /// Get a single customer order shipment detail by ID.
-  /// Bagisto API query: customerOrderShipment(id: Int!)
+  /// Almared API query: customerOrderShipment(id: Int!)
   /// Returns: Shipment with items
   static const String getCustomerOrderShipment = r'''
     query getOrderShipment($id: Int!) {
@@ -960,7 +960,7 @@ mutation createReorderOrder($input: createReorderOrderInput!) {
   ''';
 
   /// Get customer downloadable products (cursor-based pagination)
-  /// Bagisto API query: customerDownloadableProducts(first: Int, after: String)
+  /// Almared API query: customerDownloadableProducts(first: Int, after: String)
   /// Returns: DownloadableProductCursorConnection with product details
   static const String getCustomerDownloadableProducts = r'''
     query getCustomerDownloadableProducts($first: Int, $after: String) {
@@ -1000,7 +1000,7 @@ mutation createReorderOrder($input: createReorderOrderInput!) {
   ''';
 
   /// Get CMS pages list
-  /// Bagisto API query: pages
+  /// Almared API query: pages
   /// Returns: PagesCursorConnection with page details including translations
   static const String getCmsPages = r'''
     query getCmsPages {
@@ -1030,7 +1030,7 @@ mutation createReorderOrder($input: createReorderOrderInput!) {
   ''';
 
   /// Create contact us submission
-  /// Bagisto API mutation: createContactUs
+  /// Almared API mutation: createContactUs
   /// Returns: ContactUsResponse with success and message
   static const String createContactUs = r'''
     mutation createContactUs($input: createContactUsInput!) {

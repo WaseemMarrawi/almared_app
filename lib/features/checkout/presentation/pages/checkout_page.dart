@@ -121,8 +121,8 @@ class _CheckoutPageViewState extends State<_CheckoutPageView> {
   // Display controllers for country/state bottom sheet selection
   final _billingCountryDisplayCtrl = TextEditingController();
   final _billingStateDisplayCtrl = TextEditingController();
-  BagistoCountry? _selectedBillingCountry;
-  BagistoCountryState? _selectedBillingState;
+  AlmaredCountry? _selectedBillingCountry;
+  AlmaredCountryState? _selectedBillingState;
 
   // Guest shipping address form controllers (when different from billing)
   final _shippingFormKey = GlobalKey<FormState>();
@@ -140,8 +140,8 @@ class _CheckoutPageViewState extends State<_CheckoutPageView> {
   // Display controllers for shipping country/state bottom sheet selection
   final _shippingCountryDisplayCtrl = TextEditingController();
   final _shippingStateDisplayCtrl = TextEditingController();
-  BagistoCountry? _selectedShippingCountry;
-  BagistoCountryState? _selectedShippingState;
+  AlmaredCountry? _selectedShippingCountry;
+  AlmaredCountryState? _selectedShippingState;
 
   // For logged-in address selection
   CheckoutAddress? _selectedBillingAddress;
@@ -1333,17 +1333,17 @@ class _CheckoutPageViewState extends State<_CheckoutPageView> {
 
   Widget _buildCountrySelector({
     required TextEditingController displayCtrl,
-    required BagistoCountry? selectedCountry,
-    required List<BagistoCountry> countries,
+    required AlmaredCountry? selectedCountry,
+    required List<AlmaredCountry> countries,
     required bool isLoading,
-    required void Function(BagistoCountry) onSelected,
+    required void Function(AlmaredCountry) onSelected,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: isLoading || countries.isEmpty
           ? null
           : () async {
-              final selected = await SelectionSheet.show<BagistoCountry>(
+              final selected = await SelectionSheet.show<AlmaredCountry>(
                 context: context,
                 title: AppLocalizations.of(context)!.checkoutSelectCountry,
                 items: countries,
@@ -1420,11 +1420,11 @@ class _CheckoutPageViewState extends State<_CheckoutPageView> {
 
   Widget _buildStateSelector({
     required TextEditingController displayCtrl,
-    required BagistoCountryState? selectedState,
-    required List<BagistoCountryState> states,
+    required AlmaredCountryState? selectedState,
+    required List<AlmaredCountryState> states,
     required bool hasCountry,
     required bool isLoading,
-    required void Function(BagistoCountryState) onSelected,
+    required void Function(AlmaredCountryState) onSelected,
     required void Function(String) onManualChanged,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -1509,7 +1509,7 @@ class _CheckoutPageViewState extends State<_CheckoutPageView> {
       onTap: (!hasCountry || isLoading)
           ? null
           : () async {
-              final selected = await SelectionSheet.show<BagistoCountryState>(
+              final selected = await SelectionSheet.show<AlmaredCountryState>(
                 context: context,
                 title: AppLocalizations.of(context)!.checkoutSelectState,
                 items: states,

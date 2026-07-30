@@ -1,4 +1,4 @@
-import 'package:bagisto_flutter/features/account/presentation/helpers/address_book_navigation_helpers.dart';
+import 'package:almared/features/account/presentation/helpers/address_book_navigation_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

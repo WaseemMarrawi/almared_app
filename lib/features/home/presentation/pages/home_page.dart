@@ -24,10 +24,10 @@ import '../widgets/recently_viewed_products_section.dart';
 import '../widgets/section_header.dart';
 import '../widgets/static_content_widget.dart';
 
-/// The main Home page of the Bagisto Flutter app.
+/// The main Home page of the Almared Flutter app.
 ///
 /// Layout (matching Figma node 86:930):
-///   1. App bar with Bagisto logo, search icon, notification bell
+///   1. App bar with Almared logo, search icon, notification bell
 ///   2. Scrollable body driven by `themeCustomizations`:
 ///      • category_carousel → horizontal category circles
 ///      • image_carousel → auto-scrolling banner
@@ -207,7 +207,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     BuildContext context,
     String title, {
     Map<String, dynamic> filters = const {},
-  }) {
+  })
+  {
     // Build the API filter JSON from themeCustomization filters,
     // excluding UI-only keys like "sort" and "limit".
     // API requires all values to be strings.
@@ -305,7 +306,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       height: 48,
       child: Row(
         children: [
-          // Logo + "bagisto" text inside search-style container
+          // Logo + Almared wordmark inside search-style container
           Expanded(
             child: GestureDetector(
               onTap: () => _openSearchPage(context),
@@ -321,17 +322,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Bagisto logo + text
+                    // Almared logo + text
                     Row(
                       children: [
                         SvgPicture.asset(
-                          'assets/images/bagisto_logo.svg',
+                          'assets/images/almared_logo.svg',
                           width: 20,
                           height: 20,
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'bagisto',
+                          'Almared',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w700,
@@ -517,7 +518,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               StaticContentWidget(
                 html: htmlRaw,
                 css: cssRaw,
-                baseUrl: Uri.parse(bagistoEndpoint).origin,
+                baseUrl: Uri.parse(almaredEndpoint).origin,
                 onViewAllPressed: () => _openViewAll(context, tc.name),
               ),
             );

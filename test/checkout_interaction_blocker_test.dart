@@ -1,4 +1,4 @@
-import 'package:bagisto_flutter/features/checkout/presentation/widgets/checkout_interaction_blocker.dart';
+import 'package:almared/features/checkout/presentation/widgets/checkout_interaction_blocker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -9,7 +9,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'Магазин Bagisto';
+  String get appTitle => 'Almared';
 
   @override
   String get homeFailedToLoad => 'Не удалось загрузить главную страницу';

@@ -203,8 +203,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepository repository;
 
   /// SharedPreferences keys
-  static const _guestCartTokenKey = 'bagisto_guest_cart_token';
-  static const _guestCartIdKey = 'bagisto_guest_cart_id';
+  static const _guestCartTokenKey = 'almared_guest_cart_token';
+  static const _guestCartIdKey = 'almared_guest_cart_id';
 
   /// Guard flag: when true, _onLoadCart will skip because
   /// _onUserLoggedIn is actively handling the cart.

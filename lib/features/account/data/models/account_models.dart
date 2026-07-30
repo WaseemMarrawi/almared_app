@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/currency/currency_formatter.dart';
 
-final String _baseUrl = Uri.parse(bagistoEndpoint).origin;
+final String _baseUrl = Uri.parse(almaredEndpoint).origin;
 
 // Data models for Account Dashboard
 // Covers: Customer Profile, Addresses, Orders, Wishlist, Reviews

@@ -215,7 +215,7 @@ class SortOption {
   });
 }
 
-/// Predefined sort options matching Bagisto API docs
+/// Predefined sort options matching Almared API docs
 /// Sort key options: PRICE, TITLE, NEWEST, BEST_SELLING
 const List<SortOption> sortByFields = [
   SortOption(

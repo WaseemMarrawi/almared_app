@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 /// Design tokens extracted from Figma design
 /// Light mode: node-id=92-1679
 /// Dark mode: node-id=92-1730
-
 class AppColors {
-  // Primary
-  static const Color primary500 = Color(0xFFFF6900);
-  static const Color primary600 = Color(0xFFF54900);
+  // Primary (Blue)
+  static const Color primary50 = Color(0xFFF2F6FD);
+  static const Color primary100 = Color(0xFFDCE7F8);
+  static const Color primary200 = Color(0xFFB9CEF1);
+  static const Color primary300 = Color(0xFF8DAEE8);
+  static const Color primary400 = Color(0xFF5E86DA);
+  static const Color primary500 = Color(0xFF224A9B); // Main Brand Color
+  static const Color primary600 = Color(0xFF1D4189);
+  static const Color primary700 = Color(0xFF173775);
+  static const Color primary800 = Color(0xFF132C5E);
+  static const Color primary900 = Color(0xFF0E2148);
 
-  // Neutral - Light
+  // Neutral
   static const Color neutral50 = Color(0xFFFAFAFA);
   static const Color neutral100 = Color(0xFFF5F5F5);
   static const Color neutral200 = Color(0xFFE5E5E5);
@@ -21,15 +28,22 @@ class AppColors {
   static const Color neutral800 = Color(0xFF262626);
   static const Color neutral900 = Color(0xFF171717);
 
-  // Status
-  static const Color successGreen = Color(0xFF00A63E);
-  static const Color success50 = Color(0xFFF0FDF4);
-  static const Color success500 = Color(0xFF00C950);
-  static const Color success700 = Color(0xFF008236);
+  // Success
+  static const Color successGreen = Color(0xFF1FA971);
+  static const Color success50 = Color(0xFFF0FCF7);
+  static const Color success500 = Color(0xFF23C483);
+  static const Color success700 = Color(0xFF198F60);
 
-  // Process / Info
-  static const Color process600 = Color(0xFF155DFC);
-  static const Color process700 = Color(0xFF1447E6);
+  // Information
+  static const Color process500 = Color(0xFF3B82F6);
+  static const Color process600 = Color(0xFF2563EB);
+  static const Color process700 = Color(0xFF1D4ED8);
+
+  // Warning
+  static const Color warning500 = Color(0xFFF59E0B);
+
+  // Error
+  static const Color error500 = Color(0xFFDC2626);
 
   // Static
   static const Color white = Color(0xFFFFFFFF);
@@ -128,10 +142,9 @@ class AppTextStyles {
       fontWeight: FontWeight.w400,
       fontSize: 14,
       height: 1.17,
-      color: AppColors.primary500,
+      color: AppColors.success500,
     );
   }
-
   /// Text-1: Roboto 600, 24px (large price)
   static TextStyle text1(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;

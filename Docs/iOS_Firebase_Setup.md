@@ -9,7 +9,7 @@
 ## Step 2: Create Apple App in Firebase
 
 1. In Firebase Console, click "Add app" → "iOS"
-2. Enter your iOS Bundle ID: `com.example.bagistoFlutter`
+2. Enter your iOS Bundle ID: `com.example.almaredFlutter`
 3. (Optional) Enter other details like App Store ID
 4. Download `GoogleService-Info.plist`
 
@@ -163,7 +163,7 @@ Users will be prompted when the app first tries to display notifications.
 - **Solution:**
   - Check "Push Notifications" capability is enabled
   - Run on a physical device (simulators have limited FCM support)
-  - Check device Settings → Bagisto Store → Notifications is enabled
+  - Check device Settings → Almared → Notifications is enabled
 
 ### Issue: Notifications not appearing
 - **Solution:**

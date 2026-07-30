@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.bagisto" "\0"
-            VALUE "FileDescription", "bagisto_flutter" "\0"
+            VALUE "CompanyName", "Almared" "\0"
+            VALUE "FileDescription", "Almared" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "bagisto_flutter" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.bagisto. All rights reserved." "\0"
-            VALUE "OriginalFilename", "bagisto_flutter.exe" "\0"
-            VALUE "ProductName", "bagisto_flutter" "\0"
+            VALUE "InternalName", "almared" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Almared. All rights reserved." "\0"
+            VALUE "OriginalFilename", "almared.exe" "\0"
+            VALUE "ProductName", "Almared" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

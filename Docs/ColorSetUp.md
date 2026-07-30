@@ -1,6 +1,6 @@
 # Color Setup Guide
 
-This document explains how to customize colors in the Bagisto Flutter app.
+This document explains how to customize colors in the Almared Flutter app.
 
 ## Color Architecture
 

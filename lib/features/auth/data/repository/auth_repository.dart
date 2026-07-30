@@ -6,7 +6,7 @@ import '../../../../core/notifications/device_token_service.dart';
 import '../models/auth_models.dart';
 
 /// Repository for authentication API calls via GraphQL.
-/// Matches Bagisto API: createCustomerLogin, createCustomer,
+/// Matches Almared API: createCustomerLogin, createCustomer,
 /// createForgotPassword, createLogout.
 /// Also handles FCM device token management.
 class AuthRepository {
@@ -72,7 +72,7 @@ class AuthRepository {
   }
 
   /// Register a new customer.
-  /// Matches Bagisto API: firstName, lastName, email, password, confirmPassword
+  /// Matches Almared API: firstName, lastName, email, password, confirmPassword
   /// Automatically includes FCM device token in the request if available.
   Future<Customer> register({
     required String firstName,

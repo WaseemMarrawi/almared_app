@@ -26,7 +26,7 @@ import 'product_grouped_products_section.dart';
 /// Figma: Frame 1984079207
 ///
 /// Configurable product options are derived from variants since
-/// superAttributes.options returns null from the Bagisto API.
+/// superAttributes.options returns null from the Almared API.
 class ProductAttributesSection extends StatelessWidget {
   final ProductModel product;
 
@@ -650,7 +650,7 @@ class ProductAttributesSection extends StatelessWidget {
     if (product == null) return;
 
     // Build share text and URL
-    final base = Uri.parse(bagistoEndpoint).origin;
+    final base = Uri.parse(almaredEndpoint).origin;
     final String shareUrl = '$base/${product.urlKey ?? ''}';
 
     // Use share_plus to share the product
@@ -978,7 +978,7 @@ class ProductAttributesSection extends StatelessWidget {
       return downloadUrl;
     }
 
-    final baseUri = Uri.parse(bagistoEndpoint);
+    final baseUri = Uri.parse(almaredEndpoint);
     return baseUri.resolveUri(uri).toString();
   }
 

@@ -6,7 +6,7 @@
 
 * [Enhancement] Added product customizable options support on product detail pages, including dynamic controls for text, textarea, checkbox, radio, select, multiselect, date, datetime, and time options.
 * [Improvement] Improved add-to-cart handling so supported customizable options are included across simple, configurable, grouped, bundle, downloadable, and booking product flows.
-* [Known Limitation] The File customizable option type is not supported yet because the Bagisto API does not currently support it for mobile app implementation. Once Bagisto API support is available, this option type will be implemented as well.
+* [Known Limitation] The File customizable option type is not supported yet because the Almared API does not currently support it for mobile app implementation. Once Almared API support is available, this option type will be implemented as well.
 
 # CHANGELOG for v2.4.5
 
@@ -82,7 +82,7 @@
 
 # CHANGELOG for v2.3.2
 
-* [Enhancement] Features as per Bagisto v2.3.6.
+* [Enhancement] Features as per Almared v2.3.6.
 * [Improvement] Optimized GraphQL queries across the project to improve data retrieval performance.
 * [Improvement] Optimized overall user experience
 * [Compatibility] Compatibility with Xcode 16.3.
@@ -94,7 +94,7 @@
 
 # CHANGELOG for v2.3.0
 
-* [Enhancement] Features as per Bagisto v2.3.0.
+* [Enhancement] Features as per Almared v2.3.0.
 * [Enhancement] HomePage Similar to web with respect to dynamic html content.
 * [Enhancement] Booking Product Support Added
 * [Enhancement] Customizable Options feature added
@@ -110,7 +110,7 @@
 
 ## **v2.3.0-alpha (16th of May, 2025)** - *Release*
 
-* [Enhancement] Compatibility with Bagisto v2.3.0.
+* [Enhancement] Compatibility with Almared v2.3.0.
 * [Enhancement] Introduced an "Agreement & Terms Policy" button on the sign-up screen.
 * [Improvement] support dynamic additional key, enabling flexible data handling.
 * [Improvement] Updated filterAttributes key dynamic to enabling flexible data handling.
@@ -129,7 +129,7 @@
 
 ## **v2.2.2 (23rd of October 2024)** - *Release*
 
-* [Feature] Compatible with Bagisto version 2.2.2
+* [Feature] Compatible with Almared version 2.2.2
 
 * [Feature] Reorder support
 
@@ -183,7 +183,7 @@
 
 ## **v2.0.0 (31st of January 2024)** - *Release*
 
-* [Feature] Compatible with Bagisto version 2.0.0
+* [Feature] Compatible with Almared version 2.0.0
 
 * [Feature] Push Notification
 
@@ -247,7 +247,7 @@
 
 ## **v1.4.5 (5th of June 2023)** - *Release*
 
-* [Feature] Compatible with Bagisto version 1.4.5
+* [Feature] Compatible with Almared version 1.4.5
 
 * [Feature] App Performance Enhanced
 
@@ -291,7 +291,7 @@
 
 ## **v1.3.3 (23rd November 2021)** - *Release*
 
-* [Feature] Compatible with Bagisto version 1.3.3
+* [Feature] Compatible with Almared version 1.3.3
 
 * [Fixed] - Guest user should not be able to add product to the wishlist.
 
@@ -307,7 +307,7 @@
 
 ## **v1.3.2 (30th April 2021)** - *Release*
 
-* [Feature] Compatible with Bagisto version 1.3.2
+* [Feature] Compatible with Almared version 1.3.2
 
 * [Fixed] - If user edit the address then app will add brackets with street field every time.
 

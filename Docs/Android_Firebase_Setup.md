@@ -9,7 +9,7 @@
 ## Step 2: Add Android App to Firebase
 
 1. In Firebase Console, click "Add app" → "Android"
-2. Enter your package name: `com.example.bagisto_flutter`
+2. Enter your package name: `com.example.almared`
 3. (Optional) Enter SHA-1 fingerprint for Google Sign-In:
    ```bash
    # Generate SHA-1 from your signing key:
@@ -88,7 +88,7 @@ Update `android/app/src/main/AndroidManifest.xml`:
         <!-- Default notification channel -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="bagisto_notifications" />
+            android:value="almared_notifications" />
     </application>
 </manifest>
 ```

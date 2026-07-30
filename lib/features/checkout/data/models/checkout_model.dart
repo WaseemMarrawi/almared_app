@@ -1,25 +1,25 @@
 import '../../../../core/currency/currency_formatter.dart';
 
-// Checkout models matching the real Bagisto Headless Commerce GraphQL schema.
+// Checkout models matching the real Almared Headless Commerce GraphQL schema.
 
 // ─── Country & State (from countries / countryStates queries) ──────────────
 
-/// A country from the Bagisto `countries` query.
-class BagistoCountry {
+/// A country from the Almared `countries` query.
+class AlmaredCountry {
   final String id;
   final int numericId;
   final String code;
   final String name;
 
-  const BagistoCountry({
+  const AlmaredCountry({
     required this.id,
     required this.numericId,
     required this.code,
     required this.name,
   });
 
-  factory BagistoCountry.fromJson(Map<String, dynamic> json) {
-    return BagistoCountry(
+  factory AlmaredCountry.fromJson(Map<String, dynamic> json) {
+    return AlmaredCountry(
       id: json['id']?.toString() ?? '',
       numericId: (json['_id'] as int?) ?? 0,
       code: json['code'] as String? ?? '',
@@ -30,7 +30,7 @@ class BagistoCountry {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BagistoCountry &&
+      other is AlmaredCountry &&
           runtimeType == other.runtimeType &&
           code == other.code;
 
@@ -38,11 +38,11 @@ class BagistoCountry {
   int get hashCode => code.hashCode;
 
   @override
-  String toString() => 'BagistoCountry($code, $name)';
+  String toString() => 'AlmaredCountry($code, $name)';
 }
 
-/// A state/province from the Bagisto `countryStates` query.
-class BagistoCountryState {
+/// A state/province from the Almared `countryStates` query.
+class AlmaredCountryState {
   final String id;
   final int numericId;
   final String? code;
@@ -50,7 +50,7 @@ class BagistoCountryState {
   final int countryId;
   final String countryCode;
 
-  const BagistoCountryState({
+  const AlmaredCountryState({
     required this.id,
     required this.numericId,
     this.code,
@@ -59,8 +59,8 @@ class BagistoCountryState {
     required this.countryCode,
   });
 
-  factory BagistoCountryState.fromJson(Map<String, dynamic> json) {
-    return BagistoCountryState(
+  factory AlmaredCountryState.fromJson(Map<String, dynamic> json) {
+    return AlmaredCountryState(
       id: json['id']?.toString() ?? '',
       numericId: _parseInt(json['_id']),
       code: json['code'] as String?,
@@ -73,7 +73,7 @@ class BagistoCountryState {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BagistoCountryState &&
+      other is AlmaredCountryState &&
           runtimeType == other.runtimeType &&
           code == other.code &&
           countryCode == other.countryCode;
@@ -82,7 +82,7 @@ class BagistoCountryState {
   int get hashCode => Object.hash(code, countryCode);
 
   @override
-  String toString() => 'BagistoCountryState($code, $defaultName)';
+  String toString() => 'AlmaredCountryState($code, $defaultName)';
 }
 
 // ─── Checkout Address (from collectionGetCheckoutAddresses) ────────────────

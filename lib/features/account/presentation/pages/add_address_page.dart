@@ -25,7 +25,7 @@ import '../widgets/address_form_field.dart';
 ///   - Bottom sticky "Save to Address Book" / "Update Address" button
 ///
 /// Pass [editingAddress] to pre-populate the form for editing.
-/// Integrates with Bagisto GraphQL API via [AddressBookBloc].
+/// Integrates with Almared GraphQL API via [AddressBookBloc].
 class AddAddressPage extends StatefulWidget {
   /// When non-null, the page operates in **edit mode**.
   final CustomerAddress? editingAddress;

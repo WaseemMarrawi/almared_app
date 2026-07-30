@@ -1,13 +1,13 @@
-import 'package:bagisto_flutter/core/graphql/queries.dart';
-import 'package:bagisto_flutter/features/cart/data/models/cart_model.dart';
-import 'package:bagisto_flutter/features/cart/data/repository/cart_repository.dart';
-import 'package:bagisto_flutter/features/category/data/models/product_model.dart';
-import 'package:bagisto_flutter/features/product/domain/models/customizable_file_selection.dart';
+import 'package:almared/core/graphql/queries.dart';
+import 'package:almared/features/cart/data/models/cart_model.dart';
+import 'package:almared/features/cart/data/repository/cart_repository.dart';
+import 'package:almared/features/category/data/models/product_model.dart';
+import 'package:almared/features/product/domain/models/customizable_file_selection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ProductModel customizableOptions', () {
-    test('parses Bagisto customizable option connection with prices', () {
+    test('parses Almared customizable option connection with prices', () {
       final product = ProductModel.fromJson({
         'id': '/api/shop/products/2493',
         '_id': 2493,
@@ -129,7 +129,7 @@ void main() {
   });
 
   group('CartModel shop API response', () {
-    test('parses snake_case cart fields from Bagisto shop API', () {
+    test('parses snake_case cart fields from Almared shop API', () {
       final cart = CartModel.fromJson({
         'id': 8723,
         'is_guest': true,

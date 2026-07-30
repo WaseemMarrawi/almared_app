@@ -16,7 +16,7 @@ class AddToCartRequest {
   const AddToCartRequest({required this.mutation, required this.variables});
 }
 
-/// Repository for all cart operations via Bagisto GraphQL API.
+/// Repository for all cart operations via Almared GraphQL API.
 ///
 /// TOKEN MANAGEMENT (matching Next.js reference):
 ///

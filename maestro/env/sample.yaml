@@ -2,8 +2,8 @@
 # Duplicate and rename this file (e.g., env.staging.yaml) and pass via:
 # maestro test maestro/flows/android/full_app_flow.yaml --env maestro/env/staging.yaml --device <udid>
 
-APP_ID_ANDROID: "com.webkul.bagisto.mobikul"
-APP_ID_IOS: "com.webkul.bagistoApp.iOS"
+APP_ID_ANDROID: "com.almared.app"
+APP_ID_IOS: "com.almared.app"
 
 # Test accounts
 USER_EMAIL: "demo.user@example.com"

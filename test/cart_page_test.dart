@@ -1,9 +1,9 @@
-import 'package:bagisto_flutter/core/wishlist/wishlist_cubit.dart';
-import 'package:bagisto_flutter/features/cart/data/models/cart_model.dart';
-import 'package:bagisto_flutter/features/cart/data/repository/cart_repository.dart';
-import 'package:bagisto_flutter/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:bagisto_flutter/features/cart/presentation/pages/cart_page.dart';
-import 'package:bagisto_flutter/l10n/app_localizations.dart';
+import 'package:almared/core/wishlist/wishlist_cubit.dart';
+import 'package:almared/features/cart/data/models/cart_model.dart';
+import 'package:almared/features/cart/data/repository/cart_repository.dart';
+import 'package:almared/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:almared/features/cart/presentation/pages/cart_page.dart';
+import 'package:almared/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:bagisto_flutter/features/cart/data/models/cart_model.dart';
-import 'package:bagisto_flutter/features/checkout/data/models/checkout_model.dart';
-import 'package:bagisto_flutter/features/checkout/data/repository/checkout_repository.dart';
-import 'package:bagisto_flutter/features/checkout/presentation/bloc/checkout_bloc.dart';
-import 'package:bagisto_flutter/features/checkout/presentation/helpers/checkout_address_sheet_helpers.dart';
-import 'package:bagisto_flutter/features/checkout/presentation/widgets/checkout_address_selection_sheet.dart';
+import 'package:almared/features/cart/data/models/cart_model.dart';
+import 'package:almared/features/checkout/data/models/checkout_model.dart';
+import 'package:almared/features/checkout/data/repository/checkout_repository.dart';
+import 'package:almared/features/checkout/presentation/bloc/checkout_bloc.dart';
+import 'package:almared/features/checkout/presentation/helpers/checkout_address_sheet_helpers.dart';
+import 'package:almared/features/checkout/presentation/widgets/checkout_address_selection_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -722,7 +722,7 @@ class _FakeCheckoutRepository extends CheckoutRepository {
       customerAddresses;
 
   @override
-  Future<List<BagistoCountry>> getCountries() async => <BagistoCountry>[];
+  Future<List<AlmaredCountry>> getCountries() async => <AlmaredCountry>[];
 
   @override
   Future<CheckoutAddressResponse> saveCheckoutAddress(

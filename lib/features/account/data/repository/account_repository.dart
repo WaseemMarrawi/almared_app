@@ -71,7 +71,7 @@ Map<String, dynamic> buildSetDefaultCustomerAddressMutationInput({
 ///   - Product Reviews    (productReviews)
 ///
 /// Note: Orders and Wishlist queries are NOT available in
-/// the Bagisto demo storefront GraphQL schema. Those sections
+/// the Almared demo storefront GraphQL schema. Those sections
 /// return empty lists gracefully.
 class AccountRepository {
   final GraphQLClient client;
@@ -601,7 +601,7 @@ class AccountRepository {
 
   /// Update an existing customer address via createAddUpdateCustomerAddress mutation.
   /// The `addressId` (Int) tells the API which address to update.
-  /// API: https://api-docs.bagisto.com/api/graphql-api/shop/mutations/update-customer-address.html
+  /// API: https://api-docs.almared.com/api/graphql-api/shop/mutations/update-customer-address.html
   Future<CustomerAddress> updateAddress({
     required int addressId,
     required String firstName,
@@ -1101,7 +1101,7 @@ class AccountRepository {
   }
 
   /// Fetch a single customer order detail by numeric ID.
-  /// The Bagisto API expects an IRI ID for the `customerOrder(id: ID!)` query.
+  /// The Almared API expects an IRI ID for the `customerOrder(id: ID!)` query.
   /// We construct it as: `/api/shop/customer-orders/{numericId}`
   Future<OrderDetail> getCustomerOrder(int orderId) async {
     debugPrint('📦 AccountRepo.getCustomerOrder (id=$orderId)');
@@ -1201,7 +1201,7 @@ class AccountRepository {
   }
 
   /// Fetch a single customer invoice detail by numeric ID.
-  /// The Bagisto API expects an IRI ID for the `customerInvoice(id: ID!)` query.
+  /// The Almared API expects an IRI ID for the `customerInvoice(id: ID!)` query.
   /// We construct it as: `/api/shop/customer-invoices/{numericId}`
   Future<OrderInvoice> getCustomerInvoice(int invoiceId) async {
     debugPrint('🧾 AccountRepo.getCustomerInvoice (id=$invoiceId)');

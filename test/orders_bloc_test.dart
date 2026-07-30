@@ -1,6 +1,6 @@
-import 'package:bagisto_flutter/features/account/data/models/account_models.dart';
-import 'package:bagisto_flutter/features/account/data/repository/account_repository.dart';
-import 'package:bagisto_flutter/features/account/presentation/bloc/orders_bloc.dart';
+import 'package:almared/features/account/data/models/account_models.dart';
+import 'package:almared/features/account/data/repository/account_repository.dart';
+import 'package:almared/features/account/presentation/bloc/orders_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

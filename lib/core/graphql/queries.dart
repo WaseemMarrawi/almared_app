@@ -1,15 +1,15 @@
-/// GraphQL queries for the Bagisto category & catalog API
+/// GraphQL queries for the Almared category & catalog API
 /// Ported from: nextjs-commerce-main/src/graphql/catelog/
 library;
 
 class StoreConfigQueries {
-  /// Fetches the configured Bagisto channel with its locales, currencies,
+  /// Fetches the configured Almared channel with its locales, currencies,
   /// and defaults used during app startup.
   static const String getChannelById = r'''
     query getChannelByID($id: ID!) {
       channel(id: $id) {
         id
-        _id
+        id
         code
         hostname
         theme
@@ -21,7 +21,7 @@ class StoreConfigQueries {
           edges {
             node {
               id
-              _id
+              id
               code
               name
               direction
@@ -32,7 +32,7 @@ class StoreConfigQueries {
           edges {
             node {
               id
-              _id
+              id
               code
               name
               symbol
@@ -41,14 +41,14 @@ class StoreConfigQueries {
         }
         defaultLocale {
           id
-          _id
+          id
           code
           name
           direction
         }
         baseCurrency {
           id
-          _id
+          id
           code
           name
           symbol
@@ -65,7 +65,7 @@ class CategoryQueries {
     query treeCategories($parentId: Int) {
       treeCategories(parentId: $parentId) {
         id
-        _id
+        id
         position
         logoPath
         logoUrl
@@ -83,7 +83,7 @@ class CategoryQueries {
           edges {
             node {
               id
-              _id
+              id
               position
               logoPath
               logoUrl
@@ -110,14 +110,14 @@ class CategoryQueries {
         edges {
           node {
             id
-            _id
+            id
             logoUrl
             position
             translation {
               name
               slug
               id
-              _id
+              id
             }
           }
         }
@@ -131,7 +131,7 @@ class ProductQueries {
   static const String _productCoreFragment = r'''
     fragment ProductCore on Product {
       id
-      _id
+      id
       sku
       type
       name
@@ -164,7 +164,7 @@ class ProductQueries {
   static const String _productSectionFragment = r'''
     fragment ProductSection on Product {
       id
-      _id
+      id
       sku
       name
       urlKey
@@ -197,7 +197,7 @@ class ProductQueries {
   static const String _productDetailedCommonFragment = r'''
     fragment ProductDetailedCommon on Product {
       id
-      _id
+      id
       sku
       type
       name
@@ -226,7 +226,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             path
             publicPath
             type
@@ -250,7 +250,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             sku
             name
             urlKey
@@ -270,7 +270,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             type
             isRequired
             maxCharacters
@@ -285,7 +285,7 @@ class ProductQueries {
               edges {
                 node {
                   id
-                  _id
+                  id
                   label
                   price
                   formattedPrice
@@ -355,7 +355,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             type
             price
             formattedPrice
@@ -373,7 +373,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             type
             fileUrl
             sortOrder
@@ -461,7 +461,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             type
             qty
             location
@@ -470,7 +470,7 @@ class ProductQueries {
             availableTo
             defaultSlot {
               id
-              _id
+              id
               bookingType
               duration
               breakTime
@@ -478,7 +478,7 @@ class ProductQueries {
             }
             appointmentSlot {
               id
-              _id
+              id
               bookingProductId
               duration
               breakTime
@@ -487,7 +487,7 @@ class ProductQueries {
             }
             rentalSlot {
               id
-              _id
+              id
               bookingProductId
               rentingType
               dailyPrice
@@ -497,7 +497,7 @@ class ProductQueries {
             }
             tableSlot {
               id
-              _id
+              id
               bookingProductId
               priceType
               guestLimit
@@ -511,7 +511,7 @@ class ProductQueries {
               edges {
                 node {
                   id
-                  _id
+                  id
                   bookingProductId
                   price
                   formattedPrice
@@ -582,7 +582,7 @@ class ProductQueries {
 
   static const String _bookingProductCoreFields = r'''
       id
-      _id
+      id
       sku
       type
       name
@@ -601,7 +601,7 @@ class ProductQueries {
         edges {
           node {
             id
-            _id
+            id
             path
             publicPath
             type
@@ -615,7 +615,7 @@ class ProductQueries {
       bookingProducts {
         edges {
           node {
-            _id
+            id
             type
           }
         }
@@ -623,7 +623,7 @@ class ProductQueries {
   ''';
 
   static const String _bookingCommonNodeFields = r'''
-            _id
+            id
             type
             qty
             location
@@ -638,7 +638,7 @@ class ProductQueries {
         return r'''
             appointmentSlot {
               id
-              _id
+              id
               bookingProductId
               duration
               breakTime
@@ -650,7 +650,7 @@ class ProductQueries {
         return r'''
             rentalSlot {
               id
-              _id
+              id
               bookingProductId
               rentingType
               dailyPrice
@@ -663,7 +663,7 @@ class ProductQueries {
         return r'''
             tableSlot {
               id
-              _id
+              id
               bookingProductId
               priceType
               guestLimit
@@ -680,7 +680,7 @@ class ProductQueries {
               edges {
                 node {
                   id
-                  _id
+                  id
                   bookingProductId
                   price
                   formattedPrice
@@ -703,7 +703,7 @@ class ProductQueries {
         return r'''
             defaultSlot {
               id
-              _id
+              id
               bookingType
               duration
               breakTime
@@ -801,7 +801,7 @@ $slotFields
   static const String _productDetailedFragment = r'''
     fragment ProductDetailed on Product {
       id
-      _id
+      id
       sku
       type
       name
@@ -827,7 +827,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             path
             publicPath
             type
@@ -899,7 +899,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             sku
             name
             urlKey
@@ -916,7 +916,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             type
             isRequired
             maxCharacters
@@ -931,7 +931,7 @@ $slotFields
               edges {
                 node {
                   id
-                  _id
+                  id
                   label
                   price
                   formattedPrice
@@ -946,7 +946,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             type
             price
             downloads
@@ -963,7 +963,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             type
             fileUrl
             sortOrder
@@ -1039,7 +1039,7 @@ $slotFields
         edges {
           node {
             id
-            _id
+            id
             type
             qty
             location
@@ -1048,7 +1048,7 @@ $slotFields
             availableTo
             defaultSlot {
               id
-              _id
+              id
               bookingType
               duration
               breakTime
@@ -1056,7 +1056,7 @@ $slotFields
             }
             appointmentSlot {
               id
-              _id
+              id
               bookingProductId
               duration
               breakTime
@@ -1065,7 +1065,7 @@ $slotFields
             }
             rentalSlot {
               id
-              _id
+              id
               bookingProductId
               rentingType
               dailyPrice
@@ -1075,7 +1075,7 @@ $slotFields
             }
             tableSlot {
               id
-              _id
+              id
               bookingProductId
               priceType
               guestLimit
@@ -1089,7 +1089,7 @@ $slotFields
               edges {
                 node {
                   id
-                  _id
+                  id
                   bookingProductId
                   price
                   qty
@@ -1230,7 +1230,7 @@ $slotFields
     }
   ''';
 
-  /// GET_PRODUCT_BY_ID – single product detail by numeric id
+  /// GET_PRODUCT_BYid – single product detail by numeric id
   static String getProductById =
       '''
     $_productDetailedFragment
@@ -1248,7 +1248,7 @@ class ThemeQueries {
   /// Source: nextjs-commerce/src/graphql/theme/queries/ThemeCustomization.ts
   static const String getThemeCustomization = r'''
     query themeCustomization($first: Int) {
-      themeCustomizations(first: $first) {
+      themeCustomization(first: $first) {
         edges {
           node {
             id
@@ -1847,7 +1847,7 @@ class FilterQueries {
         edges {
           node {
             id
-            _id
+            id
             code
             adminName
             type
@@ -1871,7 +1871,7 @@ class FilterQueries {
               edges {
                 node {
                   id
-                  _id
+                  id
                   attributeId
                   locale
                   name
@@ -1882,14 +1882,14 @@ class FilterQueries {
               edges {
                 node {
                   id
-                  _id
+                  id
                   adminName
                   sortOrder
                   swatchValue
                   swatchValueUrl
                   translation {
                     id
-                    _id
+                    id
                     attributeOptionId
                     locale
                     label
@@ -1898,7 +1898,7 @@ class FilterQueries {
                     edges {
                       node {
                         id
-                        _id
+                        id
                         attributeOptionId
                         locale
                         label

@@ -9,7 +9,7 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get appTitle => 'Магазин Bagisto';
+  String get appTitle => 'Almared';
 
   @override
   String get homeFailedToLoad => 'Не вдалося завантажити головну сторінку';

@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "placeholder-firebase-project",
-    "storage_bucket": "placeholder-firebase-project.appspot.com"
+    "project_number": "663540830647",
+    "project_id": "fanos-40740",
+    "storage_bucket": "fanos-40740.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:1234567890abcdef12345678",
+        "mobilesdk_app_id": "1:663540830647:android:35e21cf5a4ea499b941832",
         "android_client_info": {
-          "package_name": "com.webkul.bagisto.mobikul"
+          "package_name": "com.almared.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "000000000000-dummyandroidclient.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.webkul.bagisto.mobikul",
-            "certificate_hash": "0000000000000000000000000000000000000000"
-          }
-        },
-        {
-          "client_id": "000000000000-dummywebclient.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "A12345678901234567890123456789012345678"
+          "current_key": "AIzaSyAB-0nnm_33LWw9snBvafpMtzIHRPsE3T0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "000000000000-dummywebclient.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

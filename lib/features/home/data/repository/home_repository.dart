@@ -16,7 +16,7 @@ class HomeRepository {
   HomeRepository({required GraphQLClient client}) : _client = client;
 
   /// Fetches the theme customization entries that define homepage sections.
-  Future<List<ThemeCustomization>> fetchThemeCustomizations() async {
+  Future<List<ThemeCustomization>> fetchThemeCustomization() async {
     // Read the user's preferred locale for selecting the right translation
     final prefs = await SharedPreferences.getInstance();
     final locale = prefs.getString(LocaleCubit.localeKey) ?? 'en';
@@ -35,7 +35,7 @@ class HomeRepository {
       );
     }
 
-    final edges = result.data?['themeCustomizations']?['edges'] as List? ?? [];
+    final edges = result.data?['themeCustomization']?['edges'] as List? ?? [];
     return edges
         .map(
           (e) => ThemeCustomization.fromJson(
@@ -73,7 +73,7 @@ class HomeRepository {
   ///
   /// Used by product_carousel sections: Featured Products, Hot Deals,
   /// New Products, etc.
-  /// Sort key options per Bagisto API: PRICE, TITLE, NEWEST, BEST_SELLING
+  /// Sort key options per Almared API: PRICE, TITLE, NEWEST, BEST_SELLING
   Future<List<HomeProduct>> fetchProducts({
     int first = 8,
     String? filter,

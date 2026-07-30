@@ -145,7 +145,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _doLoad(Emitter<HomeState> emit) async {
     // 1) Fetch theme customizations + categories in parallel
     final results = await Future.wait([
-      _repository.fetchThemeCustomizations(),
+      _repository.fetchThemeCustomization(),
       _repository.fetchHomeCategories(),
     ]);
 

@@ -104,7 +104,7 @@ class ClearCheckoutMessage extends CheckoutEvent {}
 /// Reset address confirmation so user can change the address
 class ResetAddressConfirmation extends CheckoutEvent {}
 
-/// Fetch countries from Bagisto API
+/// Fetch countries from Almared API
 class FetchCountries extends CheckoutEvent {}
 
 /// Refresh the saved address list for logged-in checkout.
@@ -182,10 +182,10 @@ class CheckoutState extends Equatable {
   final bool isPlacingOrder;
   final CheckoutOrderResponse? orderResponse;
 
-  // Countries & states from Bagisto API
-  final List<BagistoCountry> countries;
-  final List<BagistoCountryState> billingStates;
-  final List<BagistoCountryState> shippingStates;
+  // Countries & states from Almared API
+  final List<AlmaredCountry> countries;
+  final List<AlmaredCountryState> billingStates;
+  final List<AlmaredCountryState> shippingStates;
   final bool billingStatesLoading;
   final bool shippingStatesLoading;
 
@@ -245,9 +245,9 @@ class CheckoutState extends Equatable {
     bool? isLoading,
     bool? isPlacingOrder,
     CheckoutOrderResponse? orderResponse,
-    List<BagistoCountry>? countries,
-    List<BagistoCountryState>? billingStates,
-    List<BagistoCountryState>? shippingStates,
+    List<AlmaredCountry>? countries,
+    List<AlmaredCountryState>? billingStates,
+    List<AlmaredCountryState>? shippingStates,
     bool? billingStatesLoading,
     bool? shippingStatesLoading,
     bool clearError = false,
@@ -1089,7 +1089,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   /// the `$token` variable for `collectionShippingRates` /
   /// `collectionPaymentMethods`.
   ///
-  /// For **guest users** the API returns `cartToken: ""`. The Bagisto API
+  /// For **guest users** the API returns `cartToken: ""`. The Almared API
   /// identifies the guest cart via the session UUID in the Bearer
   /// `Authorization` header, so the `$token` variable can be an empty string.
   Future<void> _onSaveCheckoutAddress(
@@ -1574,7 +1574,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     emit(state.copyWith(clearError: true, clearSuccess: true));
   }
 
-  /// Fetch all countries from the Bagisto API
+  /// Fetch all countries from the Almared API
   Future<void> _onFetchCountries(
     FetchCountries event,
     Emitter<CheckoutState> emit,

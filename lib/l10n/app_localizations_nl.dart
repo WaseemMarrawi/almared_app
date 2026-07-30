@@ -9,7 +9,7 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get appTitle => 'Bagisto Winkel';
+  String get appTitle => 'Almared';
 
   @override
   String get homeFailedToLoad => 'Startpagina kon niet worden geladen';

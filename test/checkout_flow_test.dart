@@ -1,17 +1,17 @@
-// Tests for the Bagisto checkout flow — verifying the critical distinction
+// Tests for the Almared checkout flow — verifying the critical distinction
 // between the Bearer auth token and the cart query token ($token variable).
 //
 // Root cause of the original bug:
-//   Bagisto uses TWO different tokens during checkout:
+//   Almared uses TWO different tokens during checkout:
 //     1. Bearer auth token (login token like "292|abc...") -> Authorization header
 //     2. Cart query token  (user ID like "19")             -> $token variable
 //   The old code conflated them, passing the auth token as $token, which failed.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bagisto_flutter/features/cart/data/models/cart_model.dart';
-import 'package:bagisto_flutter/features/checkout/data/models/checkout_model.dart';
-import 'package:bagisto_flutter/features/checkout/data/repository/checkout_repository.dart';
-import 'package:bagisto_flutter/features/checkout/presentation/bloc/checkout_bloc.dart';
+import 'package:almared/features/cart/data/models/cart_model.dart';
+import 'package:almared/features/checkout/data/models/checkout_model.dart';
+import 'package:almared/features/checkout/data/repository/checkout_repository.dart';
+import 'package:almared/features/checkout/presentation/bloc/checkout_bloc.dart';
 
 void main() {
   // ════════════════════════════════════════════════════════════════════════

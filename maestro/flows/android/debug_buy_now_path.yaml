@@ -1,4 +1,4 @@
-appId: com.webkul.bagisto.mobikul
+appId: com.almared.app
 name: Debug Buy Now Path (Android)
 tags:
   - debug
@@ -10,7 +10,7 @@ tags:
 - assertVisible:
     text: "^Home$"
 - tapOn:
-    text: "^bagisto$"
+    text: "^almared$"
     waitToSettleTimeoutMs: 1000
 - eraseText
 - inputText: "Apple iPhone Smartphone"

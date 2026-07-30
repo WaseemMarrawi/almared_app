@@ -80,7 +80,7 @@ class FCMService {
 
       // Subscribe to app topic only if we have a token
       if (token != null && token.isNotEmpty) {
-        await subscribeToTopic('bagisto_mobikul');
+        await subscribeToTopic('almared');
       } else {
         debugPrint('⚠️ Skipping topic subscription - no device token yet');
         // Will subscribe when token is available
@@ -90,7 +90,7 @@ class FCMService {
       _messaging.onTokenRefresh.listen((newToken) async {
         await _handleTokenRefresh(newToken);
         // Subscribe to topic when token is refreshed
-        await subscribeToTopic('bagisto_mobikul');
+        await subscribeToTopic('almared');
       });
 
       debugPrint('✅ FCM initialized successfully');
@@ -135,9 +135,9 @@ class FCMService {
     try {
       _localNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-      // Android initialization
+      // Android initialization — monochrome status-bar icon
       const AndroidInitializationSettings androidSettings =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+          AndroidInitializationSettings('@drawable/ic_stat_almared');
 
       // iOS initialization
       final DarwinInitializationSettings
@@ -186,9 +186,9 @@ class FCMService {
     if (!Platform.isAndroid) return;
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'bagisto_notifications',
-      'Bagisto Notifications',
-      description: 'This channel is used for Bagisto app notifications',
+      'almared_notifications',
+      'Almared Notifications',
+      description: 'This channel is used for Almared app notifications',
       importance: Importance.max,
       enableVibration: true,
       playSound: true,
@@ -272,7 +272,7 @@ class FCMService {
         final token = await _getAndSaveDeviceToken();
         if (token != null && token.isNotEmpty) {
           debugPrint('✅ Token obtained on retry');
-          await subscribeToTopic('bagisto_mobikul');
+          await subscribeToTopic('almared');
         }
       } catch (e) {
         debugPrint('⚠️ Token retry failed: $e');
@@ -334,10 +334,11 @@ class FCMService {
       if (notification == null) return;
 
       final androidDetails = AndroidNotificationDetails(
-        'bagisto_notifications',
-        'Bagisto Notifications',
+        'almared_notifications',
+        'Almared Notifications',
         channelDescription:
-            'This channel is used for Bagisto app notifications',
+            'This channel is used for Almared app notifications',
+        icon: '@drawable/ic_stat_almared',
         importance: Importance.max,
         priority: Priority.high,
         showWhen: true,
@@ -491,9 +492,10 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     if (notification != null) {
       try {
         final androidDetails = AndroidNotificationDetails(
-          'bagisto_notifications',
-          'Bagisto Notifications',
-          channelDescription: 'Bagisto app notifications',
+          'almared_notifications',
+          'Almared Notifications',
+          channelDescription: 'Almared app notifications',
+          icon: '@drawable/ic_stat_almared',
           importance: Importance.max,
           priority: Priority.high,
         );

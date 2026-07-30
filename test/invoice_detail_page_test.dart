@@ -1,6 +1,6 @@
-import 'package:bagisto_flutter/features/account/data/models/account_models.dart';
-import 'package:bagisto_flutter/features/account/presentation/pages/invoice_detail_page.dart';
-import 'package:bagisto_flutter/l10n/app_localizations.dart';
+import 'package:almared/features/account/data/models/account_models.dart';
+import 'package:almared/features/account/presentation/pages/invoice_detail_page.dart';
+import 'package:almared/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

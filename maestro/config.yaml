@@ -3,8 +3,8 @@
 
 env:
   # App IDs
-  APP_ID_ANDROID: "com.webkul.bagisto.mobikul"
-  APP_ID_IOS: "com.webkul.bagistoApp.iOS"
+  APP_ID_ANDROID: "com.almared.app"
+  APP_ID_IOS: "com.almared.app"
 
   # Credentials
   USER_EMAIL: "demo.user@example.com"

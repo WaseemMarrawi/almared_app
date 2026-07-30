@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Boutique Bagisto';
+  String get appTitle => 'Almared';
 
   @override
   String get homeFailedToLoad => 'Échec du chargement de la page d\'accueil';

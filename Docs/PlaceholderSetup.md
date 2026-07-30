@@ -1,6 +1,6 @@
 # Placeholder & Image Setup
 
-This guide explains how to set up splash screens, logos, icons, and placeholders in the Bagisto Flutter app.
+This guide explains how to set up splash screens, logos, icons, and placeholders in the Almared Flutter app.
 
 ---
 
@@ -12,7 +12,7 @@ The app's assets are stored in the `assets/` folder:
 assets/
 ├── images/
 │   ├── splash.png          # Splash screen image
-│   ├── bagisto_logo.svg    # Bagisto logo (SVG)
+│   ├── almared_logo.svg    # Almared logo (SVG)
 │   ├── apple_icon.svg      # Apple sign-in icon
 │   ├── facebook_icon.svg   # Facebook sign-in icon
 │   └── google_icon.svg     # Google sign-in icon
@@ -103,7 +103,7 @@ The app includes SVG logos for branding and social login:
 
 | Icon | File Path |
 |------|-----------|
-| Bagisto Logo | `assets/images/bagisto_logo.svg` |
+| Almared Logo | `assets/images/almared_logo.svg` |
 | Apple Icon | `assets/images/apple_icon.svg` |
 | Facebook Icon | `assets/images/facebook_icon.svg` |
 | Google Icon | `assets/images/google_icon.svg` |
@@ -200,7 +200,7 @@ CachedNetworkImage(
 | Asset Type | Location |
 |------------|----------|
 | Splash Screen | `assets/images/splash.png` |
-| App Logo | `assets/images/bagisto_logo.svg` |
+| App Logo | `assets/images/almared_logo.svg` |
 | Social Icons | `assets/images/{apple,facebook,google}_icon.svg` |
 | Android Icons | `android/app/src/main/res/mipmap-*/` |
 | iOS Icons | `ios/Runner/Assets.xcassets/AppIcon.appiconset/` |

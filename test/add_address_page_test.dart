@@ -1,8 +1,8 @@
-import 'package:bagisto_flutter/features/account/data/models/account_models.dart';
-import 'package:bagisto_flutter/features/account/data/repository/account_repository.dart';
-import 'package:bagisto_flutter/features/account/presentation/bloc/address_book_bloc.dart';
-import 'package:bagisto_flutter/features/account/presentation/pages/add_address_page.dart';
-import 'package:bagisto_flutter/l10n/app_localizations.dart';
+import 'package:almared/features/account/data/models/account_models.dart';
+import 'package:almared/features/account/data/repository/account_repository.dart';
+import 'package:almared/features/account/presentation/bloc/address_book_bloc.dart';
+import 'package:almared/features/account/presentation/pages/add_address_page.dart';
+import 'package:almared/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

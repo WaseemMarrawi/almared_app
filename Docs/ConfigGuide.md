@@ -1,6 +1,6 @@
 # Configuration Guide
 
-This guide explains how to configure the Bagisto Flutter app for your specific needs.
+This guide explains how to configure the Almared Flutter app for your specific needs.
 
 ---
 
@@ -21,15 +21,15 @@ This guide explains how to configure the Bagisto Flutter app for your specific n
 
 ## API Configuration
 
-Configure the Bagisto API endpoint and storefront key:
+Configure the Almared API endpoint and storefront key:
 
 **File:** [`lib/core/constants/api_constants.dart`](../lib/core/constants/api_constants.dart)
 
 ```dart
-/// Bagisto API endpoint
-const String bagistoEndpoint = 'https://your-bagisto-domain.com/graphql';
+/// Almared API endpoint
+const String almaredEndpoint = 'https://your-almared-domain.com/graphql';
 
-/// Storefront key for Bagisto API
+/// Storefront key for Almared API
 const String storefrontKey = 'your_storefront_key';
 
 /// Company name
@@ -38,8 +38,8 @@ const String companyName = 'Your Company Name';
 
 ### Steps:
 1. Open [`lib/core/constants/api_constants.dart`](../lib/core/constants/api_constants.dart)
-2. Replace `bagistoEndpoint` with your Bagisto GraphQL endpoint
-3. Replace `storefrontKey` with your storefront API key from Bagisto Admin
+2. Replace `almaredEndpoint` with your Almared GraphQL endpoint
+3. Replace `storefrontKey` with your storefront API key from Almared Admin
 4. Update `companyName` to your company name
 
 ---
@@ -116,7 +116,7 @@ Find and modify the `android:label` attribute:
     android:icon="@mipmap/ic_launcher">
 ```
 
-Current default: `Mobikul Bagisto Laravel App`
+Current default: `Almared`
 
 ### iOS
 
@@ -129,7 +129,7 @@ Find and modify the `CFBundleDisplayName` key:
 <string>Your App Name</string>
 ```
 
-Current default: `Mobikul Bagisto Laravel App`
+Current default: `Almared`
 
 ---
 
@@ -260,7 +260,7 @@ Replace this file with your Firebase configuration file:
 
 ## Language & Localization Configuration
 
-The app already includes Flutter localization support and a language selector backed by Bagisto locale data.
+The app already includes Flutter localization support and a language selector backed by Almared locale data.
 
 ### Current Supported Languages
 
@@ -289,17 +289,17 @@ These locales are generated from the ARB files inside [`lib/l10n/`](../lib/l10n/
 | Generated supported locales and delegates | [`lib/l10n/app_localizations.dart`](../lib/l10n/app_localizations.dart) |
 | Apply locale to `MaterialApp` | [`lib/main.dart`](../lib/main.dart) |
 | Save selected locale in storage | [`lib/core/locale/locale_cubit.dart`](../lib/core/locale/locale_cubit.dart) |
-| Bootstrap Bagisto locales on app start | [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) |
+| Bootstrap Almared locales on app start | [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) |
 | Send selected locale in GraphQL headers | [`lib/core/graphql/graphql_client.dart`](../lib/core/graphql/graphql_client.dart) |
 | Language selector UI | [`lib/features/account/presentation/pages/preferences_bottom_sheet.dart`](../lib/features/account/presentation/pages/preferences_bottom_sheet.dart) |
 
 ### How It Works
 
-1. On app startup, [`ChannelBootstrapService`](../lib/core/channel/channel_bootstrap_service.dart) fetches channel locales and the default locale from Bagisto.
+1. On app startup, [`ChannelBootstrapService`](../lib/core/channel/channel_bootstrap_service.dart) fetches channel locales and the default locale from Almared.
 2. The selected locale code is stored in shared preferences using [`LocaleCubit`](../lib/core/locale/locale_cubit.dart).
 3. [`MaterialApp`](../lib/main.dart) uses that locale together with `AppLocalizations.delegate` and `AppLocalizations.supportedLocales`.
 4. When the user changes language from the account/settings UI, the app updates the locale, clears GraphQL cache, and reloads key screens.
-5. Every GraphQL request includes the selected locale in the `X-LOCALE` header so Bagisto can return translated content.
+5. Every GraphQL request includes the selected locale in the `X-LOCALE` header so Almared can return translated content.
 
 ### Important Note
 
@@ -352,7 +352,7 @@ The app uses GraphQL for API communication. The configuration is handled in:
 | **Localization ARB Files** | [`lib/l10n/`](../lib/l10n/) |
 | **Localization Generator Config** | [`l10n.yaml`](../l10n.yaml) |
 | **Locale State Management** | [`lib/core/locale/locale_cubit.dart`](../lib/core/locale/locale_cubit.dart) |
-| **Locale Bootstrap from Bagisto** | [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) |
+| **Locale Bootstrap from Almared** | [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) |
 | **GraphQL Client** | [`lib/core/graphql/graphql_client.dart`](../lib/core/graphql/graphql_client.dart) |
 | **Android Permissions** | [`android/app/src/main/AndroidManifest.xml`](../android/app/src/main/AndroidManifest.xml) |
 | **iOS Permissions** | [`ios/Runner/Info.plist`](../ios/Runner/Info.plist) |

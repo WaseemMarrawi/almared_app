@@ -13,7 +13,7 @@ import '../../../../core/widgets/app_back_button.dart';
 ///
 /// Layout:
 ///   ─ AppBar with back arrow
-///   ─ Bagisto logo + wordmark
+///   ─ Almared logo + wordmark
 ///   ─ "Welcome back!" heading (Text-2)
 ///   ─ Email text field
 ///   ─ Password text field (with visibility toggle)
@@ -368,7 +368,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLogo(bool isDark) {
     return Center(
       child: SvgPicture.asset(
-        'assets/images/bagisto_logo.svg',
+        'assets/images/almared_logo.svg',
         height: 60,
         width: 60,
       ),

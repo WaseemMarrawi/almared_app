@@ -39,11 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body:Center(
         child: Image.asset(
           'assets/images/splash.png',
-          width: double.infinity,
-          height: double.infinity,
+          width:MediaQuery.of(context).size.width*.3,
+
           fit: BoxFit.cover,
         ),
       ),

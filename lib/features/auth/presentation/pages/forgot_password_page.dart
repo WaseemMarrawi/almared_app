@@ -7,7 +7,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
 
 /// Forgot Password page
-/// Bagisto API: createForgotPassword
+/// Almared API: createForgotPassword
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
@@ -264,7 +264,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget _buildLogo(bool isDark) {
     return Center(
       child: SvgPicture.asset(
-        'assets/images/bagisto_logo.svg',
+        'assets/images/almared_logo.svg',
         height: 60,
         width: 60,
       ),

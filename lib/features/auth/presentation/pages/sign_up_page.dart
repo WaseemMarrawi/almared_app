@@ -12,7 +12,7 @@ import 'login_page.dart';
 ///
 /// Layout:
 ///   ─ AppBar with back arrow
-///   ─ Bagisto logo + wordmark
+///   ─ Almared logo + wordmark
 ///   ─ "Create Account" heading (Text-2)
 ///   ─ First Name, Last Name, Email, Password, Confirm Password fields
 ///   ─ [Sign Up] primary button (full width)
@@ -407,7 +407,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildLogo(bool isDark) {
     return Center(
       child: SvgPicture.asset(
-        'assets/images/bagisto_logo.svg',
+        'assets/images/almared_logo.svg',
         height: 60,
         width: 60,
       ),

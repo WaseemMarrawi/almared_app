@@ -91,9 +91,9 @@ void _logCheckoutApiDetails(
   debugPrint('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }
 
-/// Repository for all checkout operations via Bagisto GraphQL API.
+/// Repository for all checkout operations via Almared GraphQL API.
 ///
-/// IMPORTANT — Bagisto uses TWO different tokens during checkout:
+/// IMPORTANT — Almared uses TWO different tokens during checkout:
 ///
 ///  1. **Auth token** (`_authToken`) — The Bearer token from login
 ///     (e.g. `292|63wcgHLYi...`). Sent in the `Authorization` header.
@@ -150,9 +150,9 @@ class CheckoutRepository {
 
   // ─── Queries ─────────────────────────────────────────────────────────────
 
-  /// Fetch all available countries from the Bagisto API.
-  /// API: https://api-docs.bagisto.com/api/graphql-api/shop/queries/get-countries.html
-  Future<List<BagistoCountry>> getCountries() async {
+  /// Fetch all available countries from the Almared API.
+  /// API: https://api-docs.almared.com/api/graphql-api/shop/queries/get-countries.html
+  Future<List<AlmaredCountry>> getCountries() async {
     final result = await _authedClient.query(
       QueryOptions(
         document: gql(CheckoutQueries.getCountries),
@@ -173,15 +173,15 @@ class CheckoutRepository {
     return edges
         .map(
           (e) =>
-              BagistoCountry.fromJson((e['node'] ?? e) as Map<String, dynamic>),
+              AlmaredCountry.fromJson((e['node'] ?? e) as Map<String, dynamic>),
         )
         .toList();
   }
 
   /// Fetch states/provinces for a specific country by its numeric ID.
-  /// API: https://api-docs.bagisto.com/api/graphql-api/shop/queries/get-country-state.html
+  /// API: https://api-docs.almared.com/api/graphql-api/shop/queries/get-country-state.html
   /// Tries with countryId first, then falls back to countryCode if available
-  Future<List<BagistoCountryState>> getCountryStates(
+  Future<List<AlmaredCountryState>> getCountryStates(
     int countryId, {
     String? countryCode,
   }) async {
@@ -281,13 +281,13 @@ class CheckoutRepository {
     return statesList
         .map(
           (e) =>
-              BagistoCountryState.fromJson((e ?? {}) as Map<String, dynamic>),
+              AlmaredCountryState.fromJson((e ?? {}) as Map<String, dynamic>),
         )
         .toList();
   }
 
   /// Alternative: Fetch states using country code
-  Future<List<BagistoCountryState>> _getCountryStatesByCode(
+  Future<List<AlmaredCountryState>> _getCountryStatesByCode(
     String countryCode,
   ) async {
     debugPrint(
@@ -347,7 +347,7 @@ class CheckoutRepository {
     return statesList
         .map(
           (e) =>
-              BagistoCountryState.fromJson((e ?? {}) as Map<String, dynamic>),
+              AlmaredCountryState.fromJson((e ?? {}) as Map<String, dynamic>),
         )
         .toList();
   }

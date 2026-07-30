@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-/// Product model matching Bagisto GraphQL schema
+/// Product model matching Almared GraphQL schema
 /// Derived from: nextjs-commerce/src/graphql/catelog/fragments/Product.ts
 ///               nextjs-commerce/src/types/category/type.ts
 class ProductModel {

@@ -1540,7 +1540,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
 
     final numericId = widget.invoice.numericId;
     if (numericId != null) {
-      final origin = Uri.parse(bagistoEndpoint).origin;
+      final origin = Uri.parse(almaredEndpoint).origin;
       return '$origin/api/shop/customer-invoices/$numericId/pdf';
     }
 
@@ -1557,7 +1557,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
       return downloadUrl;
     }
 
-    final baseUri = Uri.parse(bagistoEndpoint);
+    final baseUri = Uri.parse(almaredEndpoint);
     return baseUri.resolveUri(uri).toString();
   }
 

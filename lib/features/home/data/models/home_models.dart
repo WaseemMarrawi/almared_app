@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:equatable/equatable.dart';
 
-/// Represents a theme customization entry from the Bagisto API.
+/// Represents a theme customization entry from the Almared API.
 /// Each node defines a section of the homepage (image_carousel, product_carousel,
 /// category_carousel, etc.) along with its translated options JSON.
 class ThemeCustomization extends Equatable {

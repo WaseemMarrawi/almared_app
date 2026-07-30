@@ -774,11 +774,11 @@ class _DownloadableProductCard extends StatelessWidget {
         return downloadUrl;
       }
 
-      final baseUri = Uri.parse(bagistoEndpoint);
+      final baseUri = Uri.parse(almaredEndpoint);
       return baseUri.resolveUri(uri).toString();
     }
 
-    final baseUrl = Uri.parse(bagistoEndpoint).origin;
+    final baseUrl = Uri.parse(almaredEndpoint).origin;
     return '$baseUrl/downloadable/download/purchased/${product.id}';
   }
 

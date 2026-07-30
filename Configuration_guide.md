@@ -1,6 +1,6 @@
 # Configuration Guide
 
-**Bagisto Flutter App Configuration Guide**
+**Almared Flutter App Configuration Guide**
 
 ---
 
@@ -20,13 +20,13 @@
 
 **File:** [`lib/core/constants/api_constants.dart`](lib/core/constants/api_constants.dart:1)
 
-Configure the Bagisto GraphQL API endpoint and storefront key:
+Configure the Almared GraphQL API endpoint and storefront key:
 
 ```dart
-/// Bagisto API endpoint
-const String bagistoEndpoint = 'https://your-bagisto-domain.com/graphql';
+/// Almared API endpoint
+const String almaredEndpoint = 'https://your-almared-domain.com/graphql';
 
-/// Storefront key for Bagisto API
+/// Storefront key for Almared API
 const String storefrontKey = 'your_storefront_key';
 
 /// Company name
@@ -35,8 +35,8 @@ const String companyName = 'Your Company Name';
 
 ### Steps:
 1. Open [`lib/core/constants/api_constants.dart`](lib/core/constants/api_constants.dart:1)
-2. Replace `bagistoEndpoint` with your Bagisto GraphQL endpoint URL
-3. Replace `storefrontKey` with your storefront API key from Bagisto Admin Panel
+2. Replace `almaredEndpoint` with your Almared GraphQL endpoint URL
+3. Replace `storefrontKey` with your storefront API key from Almared Admin Panel
 4. Update `companyName` to your company name (default: "Webkul Software (Registered in India)")
 
 ---
@@ -109,7 +109,7 @@ Change the app name by modifying the `android:label` attribute:
     android:icon="@mipmap/ic_launcher">
 ```
 
-Current default: `Mobikul Bagisto Laravel App`
+Current default: `Almared`
 
 ### iOS
 
@@ -122,7 +122,7 @@ Find the key `CFBundleDisplayName` and replace the string value:
 <string>Your App Name</string>
 ```
 
-Current default: `Mobikul Bagisto Laravel App`
+Current default: `Almared`
 
 ---
 

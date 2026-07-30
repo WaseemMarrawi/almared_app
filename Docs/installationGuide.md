@@ -11,7 +11,7 @@ Basic Requirements :
  
  - Internet Connection( so that android studio can download the needed packages)
  
- - A Valid admin url of the Bagisto
+ - A Valid admin url of the Almared
 
 # Procedure to Follow 
 

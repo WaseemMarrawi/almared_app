@@ -199,7 +199,7 @@ class GraphQLClientProvider {
     );
 
     final httpLink = HttpLink(
-      bagistoEndpoint,
+      almaredEndpoint,
       httpClient: httpClient,
       defaultHeaders: {
         'Content-Type': 'application/json',
@@ -272,7 +272,7 @@ class GraphQLClientProvider {
     );
 
     final httpLink = HttpLink(
-      bagistoEndpoint,
+      almaredEndpoint,
       httpClient: httpClient,
       defaultHeaders: {
         'Content-Type': 'application/json',
@@ -311,7 +311,7 @@ class GraphQLClientProvider {
     );
 
     final httpLink = HttpLink(
-      bagistoEndpoint,
+      almaredEndpoint,
       httpClient: httpClient,
       defaultHeaders: {
         'Content-Type': 'application/json',

@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// A widget that renders static content from the Bagisto API.
+/// A widget that renders static content from the Almared API.
 ///
 /// The static_content type contains HTML and CSS that defines custom
 /// sections like "Top Collections" and "Bold Collections".

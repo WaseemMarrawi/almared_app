@@ -1,8 +1,8 @@
-# Server Configuration for Bagisto Flutter App
+# Server Configuration for Almared Flutter App
 
 ## Overview
 
-The Bagisto Flutter app uses **GraphQL** for API communication. Server configuration is managed through constants and environment variables.
+The Almared Flutter app uses **GraphQL** for API communication. Server configuration is managed through constants and environment variables.
 
 ## Configuration Steps
 
@@ -11,11 +11,11 @@ The Bagisto Flutter app uses **GraphQL** for API communication. Server configura
 Go to `lib/core/constants/api_constants.dart` and configure the following:
 
 ```dart
-/// Bagisto GraphQL endpoint (e.g., https://your-bagisto-server.com/graphql)
-const String bagistoEndpoint = 'YOUR_BAGISTO_ENDPOINT_HERE';
+/// Almared GraphQL endpoint (e.g., https://your-almared-server.com/graphql)
+const String almaredEndpoint = 'YOUR_ALMARED_ENDPOINT_HERE';
 
-/// Storefront key for Bagisto API
-/// Get this from your Bagisto admin panel
+/// Storefront key for Almared API
+/// Get this from your Almared admin panel
 const String storefrontKey = 'YOUR_STOREFRONT_KEY_HERE';
 
 /// Company name (optional metadata)
@@ -24,16 +24,16 @@ const String companyName = 'Your Company Name';
 
 ## Configuration Details
 
-### `bagistoEndpoint`
+### `almaredEndpoint`
 - **Type:** String (URL)
-- **Example:** `https://bagisto.yourdomain.com/graphql`
+- **Example:** `https://almared.yourdomain.com/graphql`
 - **Purpose:** GraphQL endpoint URL for all API calls
 - **Required:** Yes
 
 ### `storefrontKey`
 - **Type:** String  
-- **Purpose:** API key for identifying your storefront in Bagisto
-- **Location in Bagisto:** Admin Panel → Settings → Channels
+- **Purpose:** API key for identifying your storefront in Almared
+- **Location in Almared:** Admin Panel → Settings → Channels
 - **Required:** Yes
 
 ## GraphQL Client Configuration
@@ -62,7 +62,7 @@ await GraphQLClientProvider.clearCache();
 ## Testing Configuration
 
 Before deploying to production:
-1. Verify your Bagisto endpoint is accessible
-2. Confirm the storefront key is valid in Bagisto admin
+1. Verify your Almared endpoint is accessible
+2. Confirm the storefront key is valid in Almared admin
 3. Test API connectivity from your development environment
 4. Check network logs in Flutter DevTools for request/response details

@@ -1,17 +1,17 @@
 # Language & Localization Configuration
 
-This guide explains how language support works in the Bagisto Flutter app and how to add a new language correctly.
+This guide explains how language support works in the Almared Flutter app and how to add a new language correctly.
 
 ---
 
 ## Overview
 
-The app uses Flutter's `gen_l10n` localization system with ARB files stored in [`lib/l10n/`](../lib/l10n/). Language selection is also connected to Bagisto backend locales, so adding a new language requires both:
+The app uses Flutter's `gen_l10n` localization system with ARB files stored in [`lib/l10n/`](../lib/l10n/). Language selection is also connected to Almared backend locales, so adding a new language requires both:
 
 1. Flutter app translations
-2. Matching locale support in Bagisto
+2. Matching locale support in Almared
 
-If only the app translations are added, the UI text can be localized, but Bagisto content like categories, CMS pages, and other translated storefront data may still come from the default backend language.
+If only the app translations are added, the UI text can be localized, but Almared content like categories, CMS pages, and other translated storefront data may still come from the default backend language.
 
 ---
 
@@ -26,7 +26,7 @@ If only the app translations are added, the UI text can be localized, but Bagist
 | [`lib/l10n/app_localizations.dart`](../lib/l10n/app_localizations.dart) | Generated localization delegate and supported locale list |
 | [`lib/main.dart`](../lib/main.dart) | Applies selected locale to `MaterialApp` |
 | [`lib/core/locale/locale_cubit.dart`](../lib/core/locale/locale_cubit.dart) | Saves and updates selected locale |
-| [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) | Loads available locales from Bagisto and stores the default locale |
+| [`lib/core/channel/channel_bootstrap_service.dart`](../lib/core/channel/channel_bootstrap_service.dart) | Loads available locales from Almared and stores the default locale |
 | [`lib/core/graphql/graphql_client.dart`](../lib/core/graphql/graphql_client.dart) | Adds the `X-LOCALE` header to GraphQL requests |
 | [`lib/features/account/presentation/pages/preferences_bottom_sheet.dart`](../lib/features/account/presentation/pages/preferences_bottom_sheet.dart) | Language selector in the account preferences UI |
 | [`lib/features/account/presentation/pages/settings_bottom_sheet.dart`](../lib/features/account/presentation/pages/settings_bottom_sheet.dart) | Alternate language selector UI |
@@ -54,7 +54,7 @@ You can verify this in [`lib/l10n/app_localizations.dart`](../lib/l10n/app_local
 
 ## How Language Selection Works
 
-1. At startup, [`ChannelBootstrapService`](../lib/core/channel/channel_bootstrap_service.dart) fetches the Bagisto channel configuration.
+1. At startup, [`ChannelBootstrapService`](../lib/core/channel/channel_bootstrap_service.dart) fetches the Almared channel configuration.
 2. The service caches available locales and stores a default locale if it matches a Flutter-supported locale.
 3. [`LocaleCubit`](../lib/core/locale/locale_cubit.dart) reads the saved locale code from shared preferences.
 4. [`MaterialApp`](../lib/main.dart) applies the locale using:
@@ -62,7 +62,7 @@ You can verify this in [`lib/l10n/app_localizations.dart`](../lib/l10n/app_local
    - `localizationsDelegates`
    - `supportedLocales`
 5. When the user changes the language in the app, the locale is saved again and key screens refresh.
-6. [`GraphQLClientProvider`](../lib/core/graphql/graphql_client.dart) sends the selected locale in the `X-LOCALE` header, which allows Bagisto to return localized content.
+6. [`GraphQLClientProvider`](../lib/core/graphql/graphql_client.dart) sends the selected locale in the `X-LOCALE` header, which allows Almared to return localized content.
 
 ---
 
@@ -70,7 +70,7 @@ You can verify this in [`lib/l10n/app_localizations.dart`](../lib/l10n/app_local
 
 ### Step 1: Choose a Locale Code
 
-Use a simple locale code that matches both Flutter and Bagisto, for example:
+Use a simple locale code that matches both Flutter and Almared, for example:
 
 - `pt`
 - `ja`
@@ -89,7 +89,7 @@ Example for Portuguese:
 ```json
 {
   "@@locale": "pt",
-  "appTitle": "Bagisto Store",
+  "appTitle": "Almared",
   "homeFailedToLoad": "Falha ao carregar a pagina inicial",
   "commonRetry": "Tentar novamente"
 }
@@ -144,15 +144,15 @@ No manual update is normally required in [`lib/main.dart`](../lib/main.dart) bec
 
 ---
 
-## Step 5: Add the Same Locale in Bagisto
+## Step 5: Add the Same Locale in Almared
 
 This step is required if you want the language to appear in the app's language selector and receive translated storefront data from the backend.
 
-Make sure Bagisto is configured so that:
+Make sure Almared is configured so that:
 
-1. The locale exists in Bagisto
+1. The locale exists in Almared
 2. The locale is assigned to the active channel
-3. The locale code returned by Bagisto matches the ARB locale code exactly
+3. The locale code returned by Almared matches the ARB locale code exactly
 4. The channel default locale is set if you want the app to start in that language by default
 
 The app reads locale data from these GraphQL paths:
@@ -160,7 +160,7 @@ The app reads locale data from these GraphQL paths:
 - [`lib/core/graphql/queries.dart`](../lib/core/graphql/queries.dart) → `channel.locales` and `channel.defaultLocale`
 - [`lib/core/graphql/account_queries.dart`](../lib/core/graphql/account_queries.dart) → `locales`
 
-If Bagisto does not return the new locale, the app will not show it in the dropdown even if the ARB file exists.
+If Almared does not return the new locale, the app will not show it in the dropdown even if the ARB file exists.
 
 ---
 
@@ -172,7 +172,7 @@ Recommended verification steps:
 2. Open the account preferences or settings language selector
 3. Confirm the new language appears in the dropdown
 4. Select the language and verify UI labels update
-5. Confirm Bagisto content is returned in the same language where backend translations exist
+5. Confirm Almared content is returned in the same language where backend translations exist
 6. Restart the app and confirm the language remains selected
 
 You can also inspect debug logs or network headers and verify that GraphQL requests include:
@@ -232,7 +232,7 @@ These do not block adding a new UI language, but they are worth reviewing if you
 - [ ] `flutter gen-l10n` completed without errors
 - [ ] Generated localization file created (`app_localizations_<locale>.dart`)
 - [ ] `supportedLocales` includes the new locale
-- [ ] Bagisto channel exposes the same locale code
+- [ ] Almared channel exposes the same locale code
 - [ ] Language appears in app settings
 - [ ] GraphQL requests include the correct `X-LOCALE` header
 - [ ] If RTL language: layout tested for RTL correctness

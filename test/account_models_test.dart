@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bagisto_flutter/features/account/data/models/account_models.dart';
+import 'package:almared/features/account/data/models/account_models.dart';
 
 void main() {
   group('CustomerProfile', () {

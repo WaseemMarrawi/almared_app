@@ -1,4 +1,4 @@
-// Cart models matching Bagisto GraphQL schema.
+// Cart models matching Almared GraphQL schema.
 // Derived from: nextjs-commerce/src/graphql/cart/mutations/
 
 import 'dart:convert';

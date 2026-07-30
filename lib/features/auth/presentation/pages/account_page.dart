@@ -139,7 +139,7 @@ class _LoggedOutView extends StatelessWidget {
                     children: [
                       const SizedBox(height: 40),
 
-                      // ── Bagisto Logo + Wordmark ──
+                      // ── Almared Logo ──
                       _buildLogo(isDark),
 
                       const SizedBox(height: 32),
@@ -196,11 +196,11 @@ class _LoggedOutView extends StatelessWidget {
     );
   }
 
-  /// Bagisto logo icon + "bagisto" wordmark
+  /// Almared logo
   Widget _buildLogo(bool isDark) {
     return Center(
       child: SvgPicture.asset(
-        'assets/images/bagisto_logo.svg',
+        'assets/images/almared_logo.svg',
         height: 60,
         width: 60,
       ),

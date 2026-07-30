@@ -1,5 +1,5 @@
-import 'package:bagisto_flutter/features/account/data/models/account_models.dart';
-import 'package:bagisto_flutter/features/account/presentation/helpers/account_dashboard_helpers.dart';
+import 'package:almared/features/account/data/models/account_models.dart';
+import 'package:almared/features/account/presentation/helpers/account_dashboard_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

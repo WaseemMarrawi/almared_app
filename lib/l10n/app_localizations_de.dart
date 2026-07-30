@@ -9,7 +9,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get appTitle => 'Bagisto Store';
+  String get appTitle => 'Almared';
 
   @override
   String get homeFailedToLoad => 'Startseite konnte nicht geladen werden';

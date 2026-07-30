@@ -1,5 +1,5 @@
-/// GraphQL queries and mutations for Bagisto checkout flow
-/// Based on the actual Bagisto Headless Commerce GraphQL schema
+/// GraphQL queries and mutations for Almared checkout flow
+/// Based on the actual Almared Headless Commerce GraphQL schema
 
 class CheckoutQueries {
   /// Get saved checkout addresses (billing & shipping)
@@ -63,14 +63,14 @@ class CheckoutQueries {
   ''';
 
   /// Get all available countries (for address form dropdowns)
-  /// API: https://api-docs.bagisto.com/api/graphql-api/shop/queries/get-countries.html
+  /// API: https://api-docs.almared.com/api/graphql-api/shop/queries/get-countries.html
   static const String getCountries = r'''
     query countries {
       countries(first: 250) {
         edges {
           node {
             id
-            _id
+            id
             code
             name
           }
@@ -80,7 +80,7 @@ class CheckoutQueries {
   ''';
 
   /// Get states/provinces for a specific country
-  /// API: https://api-docs.bagisto.com/api/graphql-api/shop/queries/get-country-state.html
+  /// API: https://api-docs.almared.com/api/graphql-api/shop/queries/get-country-state.html
   /// Returns CountryStateCursorConnection — requires edges/node wrapper
   static const String getCountryStates = r'''
     query countryStates($countryId: Int!, $first: Int) {
@@ -88,7 +88,7 @@ class CheckoutQueries {
         edges {
           node {
             id
-            _id
+            id
             code
             defaultName
             countryId
@@ -106,7 +106,7 @@ class CheckoutQueries {
         edges {
           node {
             id
-            _id
+            id
             code
             defaultName
             countryId

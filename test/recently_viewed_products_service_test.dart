@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:bagisto_flutter/core/recently_viewed/recently_viewed_products_service.dart';
-import 'package:bagisto_flutter/features/category/data/models/product_model.dart';
+import 'package:almared/core/recently_viewed/recently_viewed_products_service.dart';
+import 'package:almared/features/category/data/models/product_model.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

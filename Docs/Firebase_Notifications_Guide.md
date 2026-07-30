@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide explains how Firebase Push Notifications are integrated into your Bagisto Flutter app, with support for login, register, and logout flows.
+This guide explains how Firebase Push Notifications are integrated into your Almared Flutter app, with support for login, register, and logout flows.
 
 ## Architecture Overview
 

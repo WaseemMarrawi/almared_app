@@ -1,4 +1,4 @@
-package com.bagisto.bagisto_flutter
+package com.almared.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-// Basic widget test for Bagisto Flutter
+// Basic widget test for Almared Flutter
 
 import 'package:flutter_test/flutter_test.dart';
 

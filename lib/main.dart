@@ -112,7 +112,7 @@ void main() async {
     }
   });
 
-  runApp(BagistoApp(prefs: prefs));
+  runApp(AlmaredApp(prefs: prefs));
 }
 
 /// Handle notification when app is in foreground
@@ -420,7 +420,7 @@ Future<void> _sendTestNotification() async {
   try {
     // Create a mock RemoteMessage for testing
     debugPrint(
-      '✅ Test notification system ready! Token subscribed to bagisto_mobikul topic',
+      '✅ Test notification system ready! Token subscribed to almared topic',
     );
     debugPrint('📢 Send notifications from Firebase Console with data:');
     debugPrint('   1. FOR CATEGORY PRODUCTS:');
@@ -445,10 +445,10 @@ Future<void> _sendTestNotification() async {
   }
 }
 
-class BagistoApp extends StatelessWidget {
+class AlmaredApp extends StatelessWidget {
   final SharedPreferences prefs;
 
-  const BagistoApp({super.key, required this.prefs});
+  const AlmaredApp({super.key, required this.prefs});
 
   @override
   Widget build(BuildContext context) {

@@ -149,7 +149,7 @@ class ErrorMapper {
 
   /// Map the raw `message` from a GraphQL error into something user-facing.
   ///
-  /// Bagisto sometimes returns semi-technical messages like
+  /// Almared sometimes returns semi-technical messages like
   /// "Variable \"$input\" of required type ... was not provided." or
   /// "Internal server error". We map the most common ones here.
   static String _mapGraphQLErrorMessage(String message) {

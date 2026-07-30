@@ -1,4 +1,4 @@
-/// Category model matching Bagisto GraphQL schema
+/// Category model matching Almared GraphQL schema
 /// Derived from: nextjs-commerce/src/graphql/catelog/queries/Category.ts
 ///               nextjs-commerce/src/graphql/catelog/queries/HomeCategories.ts
 class CategoryModel {
