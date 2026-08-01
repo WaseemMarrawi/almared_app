@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'firebase_options.dart';
 
-/// Firebase initialization service
-/// Handles Firebase setup for both Android and iOS platforms
+/// Firebase initialization service.
+///
+/// Android reads `android/app/google-services.json`; iOS reads
+/// `ios/Runner/GoogleService-Info.plist`. Keeping Firebase configured from
+/// native files means replacing those files is enough when the Firebase project
+/// changes.
 class FirebaseService {
   static final FirebaseService _instance = FirebaseService._internal();
   static bool _isEnabled = false;
@@ -16,39 +19,19 @@ class FirebaseService {
 
   static bool get isEnabled => _isEnabled;
 
-  static bool _hasPlaceholderConfig(FirebaseOptions options) {
-    return options.projectId == FirebasePlaceholderConfig.projectId ||
-        options.messagingSenderId == FirebasePlaceholderConfig.senderId ||
-        options.storageBucket == FirebasePlaceholderConfig.storageBucket;
-  }
-
-  /// Initialize Firebase with platform-specific options
-  /// Must be called before running the app
+  /// Initialize Firebase before running the app.
   static Future<bool> initialize() async {
-    final options = DefaultFirebaseOptions.currentPlatform;
-
-    if (_hasPlaceholderConfig(options)) {
-      _isEnabled = false;
-      debugPrint(
-        '⚠️ Firebase config contains placeholder values. '
-        'Skipping Firebase initialization.',
-      );
-      return false;
-    }
-
     try {
-      debugPrint('🔥 Initializing Firebase...');
+      debugPrint('Initializing Firebase...');
 
-      await Firebase.initializeApp(
-        options: options,
-      );
+      await Firebase.initializeApp();
 
       _isEnabled = true;
-      debugPrint('✅ Firebase initialized successfully');
+      debugPrint('Firebase initialized successfully');
       return true;
     } catch (e) {
       _isEnabled = false;
-      debugPrint('❌ Firebase initialization error: $e');
+      debugPrint('Firebase initialization error: $e');
       return false;
     }
   }

@@ -1,10 +1,14 @@
 /// Almared API endpoint
-const String almaredEndpoint =
-    'https://fanous.circleteams.com/graphql';
+const String almaredEndpoint = String.fromEnvironment(
+  'ALMARED_GRAPHQL_ENDPOINT',
+  defaultValue: 'https://almard.eidosteam.com/api/graphql',
+);
 
 /// Storefront key for Almared API
-const String storefrontKey =
-    'your_storefront_key_here';
+const String storefrontKey = String.fromEnvironment(
+  'ALMARED_STOREFRONT_KEY',
+  defaultValue: 'pk_storefront_KTJeRKSs3pOdYZqwmYuoEIf5KNIG9LHR',
+);
 
 /// Default channel code used by request headers.
 const String channelCode = 'default';
