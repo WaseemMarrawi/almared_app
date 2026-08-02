@@ -30,6 +30,16 @@ class CategoryModel {
   String? get imageUrl => logoUrl ?? logoPath;
   bool get isActive => status == '1';
 
+  static int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    final text = value.toString();
+    return int.tryParse(text) ?? int.tryParse(text.split('/').last);
+  }
+
+  static String? _toString(dynamic value) => value?.toString();
+
   /// Factory for treeCategories response
   factory CategoryModel.fromTreeJson(Map<String, dynamic> json) {
     // Parse children from cursor connection format: { edges: [{ node: {...} }] }
@@ -48,11 +58,11 @@ class CategoryModel {
 
     return CategoryModel(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      position: json['position'] as int?,
-      logoPath: json['logoPath'] as String?,
-      logoUrl: json['logoUrl'] as String?,
-      bannerUrl: json['bannerUrl'] as String?,
+      numericId: _toInt(json['_id'] ?? json['id']),
+      position: _toInt(json['position']),
+      logoPath: _toString(json['logoPath']),
+      logoUrl: _toString(json['logoUrl']),
+      bannerUrl: _toString(json['bannerUrl']),
       status: json['status']?.toString(),
       translation: json['translation'] != null
           ? CategoryTranslation.fromJson(
@@ -66,9 +76,9 @@ class CategoryModel {
   factory CategoryModel.fromHomeCategoryJson(Map<String, dynamic> json) {
     return CategoryModel(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      logoUrl: json['logoUrl'] as String?,
-      position: json['position'] as int?,
+      numericId: _toInt(json['_id'] ?? json['id']),
+      logoUrl: _toString(json['logoUrl']),
+      position: _toInt(json['position']),
       translation: json['translation'] != null
           ? CategoryTranslation.fromJson(
               json['translation'] as Map<String, dynamic>)
@@ -97,11 +107,11 @@ class CategoryTranslation {
   factory CategoryTranslation.fromJson(Map<String, dynamic> json) {
     return CategoryTranslation(
       id: json['id']?.toString(),
-      name: json['name'] as String?,
-      slug: json['slug'] as String?,
-      description: json['description'] as String?,
-      urlPath: json['urlPath'] as String?,
-      metaTitle: json['metaTitle'] as String?,
+      name: json['name']?.toString(),
+      slug: json['slug']?.toString(),
+      description: json['description']?.toString(),
+      urlPath: json['urlPath']?.toString(),
+      metaTitle: json['metaTitle']?.toString(),
     );
   }
 }

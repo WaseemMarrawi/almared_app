@@ -460,33 +460,33 @@ class ProductModel {
 
     return ProductModel(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
+      numericId: _parseInt(json['_id'] ?? json['id']),
       qty: _parseInt(json['qty']),
-      sku: json['sku'] as String?,
-      type: json['type'] as String?,
-      name: json['name'] as String?,
-      urlKey: json['urlKey'] as String?,
-      description: json['description'] as String?,
-      shortDescription: json['shortDescription'] as String?,
+      sku: json['sku']?.toString(),
+      type: json['type']?.toString(),
+      name: json['name']?.toString(),
+      urlKey: json['urlKey']?.toString(),
+      description: json['description']?.toString(),
+      shortDescription: json['shortDescription']?.toString(),
       price: _parseDouble(json['price']),
-      formattedPrice: json['formattedPrice'] as String?,
-      baseImageUrl: json['baseImageUrl'] as String?,
+      formattedPrice: json['formattedPrice']?.toString(),
+      baseImageUrl: json['baseImageUrl']?.toString(),
       minimumPrice: _parseDouble(json['minimumPrice']),
-      formattedMinimumPrice: json['formattedMinimumPrice'] as String?,
+      formattedMinimumPrice: json['formattedMinimumPrice']?.toString(),
       specialPrice: _parseSpecialPrice(json['specialPrice']),
-      formattedSpecialPrice: json['formattedSpecialPrice'] as String?,
+      formattedSpecialPrice: json['formattedSpecialPrice']?.toString(),
       isSaleable: _parseBool(json['isSaleable']),
-      color: json['color'] as String?,
-      size: json['size'] as String?,
-      brand: json['brand'] as String?,
+      color: json['color']?.toString(),
+      size: json['size']?.toString(),
+      brand: json['brand']?.toString(),
       maximumPrice: _parseDouble(json['maximumPrice']),
-      formattedMaximumPrice: json['formattedMaximumPrice'] as String?,
+      formattedMaximumPrice: json['formattedMaximumPrice']?.toString(),
       regularMinimumPrice: _parseDouble(json['regularMinimumPrice']),
       regularMaximumPrice: _parseDouble(json['regularMaximumPrice']),
       formattedRegularMinimumPrice:
-          json['formattedRegularMinimumPrice'] as String?,
+          json['formattedRegularMinimumPrice']?.toString(),
       formattedRegularMaximumPrice:
-          json['formattedRegularMaximumPrice'] as String?,
+          json['formattedRegularMaximumPrice']?.toString(),
       guestCheckout: _parseBool(json['guestCheckout']),
       superAttributeOptionsJson: _toJsonString(json['superAttributeOptions']),
       combinationsJson: _toJsonString(json['combinations']),
@@ -514,6 +514,7 @@ class ProductModel {
     if (value == null) return null;
     if (value is double) return value;
     if (value is int) return value.toDouble();
+    if (value is num) return value.toDouble();
     if (value is String) return double.tryParse(value);
     return null;
   }
@@ -521,7 +522,10 @@ class ProductModel {
   static int? _parseInt(dynamic value) {
     if (value == null) return null;
     if (value is int) return value;
-    if (value is String) return int.tryParse(value);
+    if (value is num) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ?? int.tryParse(value.split('/').last);
+    }
     return null;
   }
 
@@ -918,10 +922,10 @@ class BundleOption {
     final translation = json['translation'] as Map<String, dynamic>?;
     return BundleOption(
       id: json['id']?.toString() ?? '',
-      type: json['type'] as String?,
+      type: json['type']?.toString(),
       isRequired: ProductModel._parseBool(json['isRequired']) ?? false,
       sortOrder: ProductModel._parseInt(json['sortOrder']),
-      label: translation?['label'] as String?,
+      label: translation?['label']?.toString(),
       bundleOptionProducts: _parseBundleOptionProducts(
         json['bundleOptionProducts'],
       ),
@@ -1223,10 +1227,10 @@ class BookingEventTicket {
       numericId: ProductModel._parseInt(json['_id']),
       bookingProductId: ProductModel._parseInt(json['bookingProductId']),
       price: ProductModel._parseDouble(json['price']),
-      formattedPrice: json['formattedPrice'] as String?,
+      formattedPrice: json['formattedPrice']?.toString(),
       qty: ProductModel._parseInt(json['qty']) ?? 0,
       specialPrice: ProductModel._parseSpecialPrice(json['specialPrice']),
-      formattedSpecialPrice: json['formattedSpecialPrice'] as String?,
+      formattedSpecialPrice: json['formattedSpecialPrice']?.toString(),
       name: json['name']?.toString() ?? translation?['name']?.toString(),
       description:
           json['description']?.toString() ??
@@ -1342,17 +1346,17 @@ class ProductVariant {
 
     return ProductVariant(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      sku: json['sku'] as String?,
-      name: json['name'] as String?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      sku: json['sku']?.toString(),
+      name: json['name']?.toString(),
       price: ProductModel._parseDouble(json['price']),
-      formattedPrice: json['formattedPrice'] as String?,
+      formattedPrice: json['formattedPrice']?.toString(),
       specialPrice: ProductModel._parseSpecialPrice(json['specialPrice']),
-      formattedSpecialPrice: json['formattedSpecialPrice'] as String?,
-      baseImageUrl: json['baseImageUrl'] as String?,
-      isSaleable: json['isSaleable'] as String?,
-      color: json['color'] as String? ?? attrMap['color'],
-      size: json['size'] as String? ?? attrMap['size'],
+      formattedSpecialPrice: json['formattedSpecialPrice']?.toString(),
+      baseImageUrl: json['baseImageUrl']?.toString(),
+      isSaleable: json['isSaleable']?.toString(),
+      color: json['color']?.toString() ?? attrMap['color'],
+      size: json['size']?.toString() ?? attrMap['size'],
       attributeValuesMap: attrMap,
     );
   }
@@ -1430,13 +1434,11 @@ class ProductReview {
   factory ProductReview.fromJson(Map<String, dynamic> json) {
     return ProductReview(
       id: json['id']?.toString() ?? '',
-      rating: (json['rating'] is int)
-          ? (json['rating'] as int).toDouble()
-          : (json['rating'] as double? ?? 0),
-      name: json['name'] as String?,
-      title: json['title'] as String?,
-      comment: json['comment'] as String?,
-      createdAt: json['createdAt'] as String?,
+      rating: ProductModel._parseDouble(json['rating']) ?? 0,
+      name: json['name']?.toString(),
+      title: json['title']?.toString(),
+      comment: json['comment']?.toString(),
+      createdAt: json['createdAt']?.toString(),
     );
   }
 
@@ -1471,11 +1473,11 @@ class ProductImage {
   factory ProductImage.fromJson(Map<String, dynamic> json) {
     return ProductImage(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      type: json['type'] as String?,
-      path: json['path'] as String? ?? '',
-      publicPath: json['publicPath'] as String?,
-      position: json['position'] as String?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      type: json['type']?.toString(),
+      path: json['path']?.toString() ?? '',
+      publicPath: json['publicPath']?.toString(),
+      position: json['position']?.toString(),
     );
   }
 }
@@ -1499,9 +1501,9 @@ class SuperAttribute {
   factory SuperAttribute.fromJson(Map<String, dynamic> json) {
     return SuperAttribute(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      code: json['code'] as String?,
-      adminName: json['adminName'] as String?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      code: json['code']?.toString(),
+      adminName: json['adminName']?.toString(),
       options: _parseOptions(json['options']),
     );
   }
@@ -1538,15 +1540,15 @@ class AttributeOption {
     String? label;
     final translation = json['translation'];
     if (translation != null && translation is Map<String, dynamic>) {
-      label = translation['label'] as String?;
+      label = translation['label']?.toString();
     }
     return AttributeOption(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      adminName: json['adminName'] as String?,
-      swatchValue: json['swatchValue'] as String?,
-      swatchValueUrl: json['swatchValueUrl'] as String?,
-      label: label ?? json['adminName'] as String?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      adminName: json['adminName']?.toString(),
+      swatchValue: json['swatchValue']?.toString(),
+      swatchValueUrl: json['swatchValueUrl']?.toString(),
+      label: label ?? json['adminName']?.toString(),
     );
   }
 
@@ -1624,7 +1626,7 @@ class ProductCategory {
     final translation = json['translation'] as Map<String, dynamic>?;
     return ProductCategory(
       id: json['id']?.toString() ?? '',
-      name: translation?['name'] as String?,
+      name: translation?['name']?.toString(),
     );
   }
 }
@@ -1645,10 +1647,11 @@ class PageInfo {
 
   factory PageInfo.fromJson(Map<String, dynamic> json) {
     return PageInfo(
-      startCursor: json['startCursor'] as String?,
-      endCursor: json['endCursor'] as String?,
-      hasNextPage: json['hasNextPage'] as bool? ?? false,
-      hasPreviousPage: json['hasPreviousPage'] as bool? ?? false,
+      startCursor: json['startCursor']?.toString(),
+      endCursor: json['endCursor']?.toString(),
+      hasNextPage: ProductModel._parseBool(json['hasNextPage']) ?? false,
+      hasPreviousPage:
+          ProductModel._parseBool(json['hasPreviousPage']) ?? false,
     );
   }
 }
@@ -1670,7 +1673,7 @@ class PaginatedProducts {
     final edges = data['edges'] as List<dynamic>? ?? [];
 
     return PaginatedProducts(
-      totalCount: data['totalCount'] as int? ?? 0,
+      totalCount: ProductModel._parseInt(data['totalCount']) ?? 0,
       pageInfo: PageInfo.fromJson(data['pageInfo'] as Map<String, dynamic>),
       products: edges
           .map((e) => ProductModel.fromJson(e['node'] as Map<String, dynamic>))
@@ -1708,19 +1711,19 @@ class DownloadableLink {
     String? title;
     final translation = json['translation'];
     if (translation != null && translation is Map<String, dynamic>) {
-      title = translation['title'] as String?;
+      title = translation['title']?.toString();
     }
 
     return DownloadableLink(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      type: json['type'] as String?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      type: json['type']?.toString(),
       price: ProductModel._parseDouble(json['price']),
-      formattedPrice: json['formattedPrice'] as String?,
-      downloads: json['downloads'] as int?,
-      sortOrder: json['sortOrder'] as int?,
-      fileUrl: json['fileUrl'] as String?,
-      sampleFileUrl: json['sampleFileUrl'] as String?,
+      formattedPrice: json['formattedPrice']?.toString(),
+      downloads: ProductModel._parseInt(json['downloads']),
+      sortOrder: ProductModel._parseInt(json['sortOrder']),
+      fileUrl: json['fileUrl']?.toString(),
+      sampleFileUrl: json['sampleFileUrl']?.toString(),
       title: title,
     );
   }
@@ -1754,15 +1757,15 @@ class DownloadableSample {
     String? title;
     final translation = json['translation'];
     if (translation != null && translation is Map<String, dynamic>) {
-      title = translation['title'] as String?;
+      title = translation['title']?.toString();
     }
 
     return DownloadableSample(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      type: json['type'] as String?,
-      fileUrl: json['fileUrl'] as String?,
-      sortOrder: json['sortOrder'] as int?,
+      numericId: ProductModel._parseInt(json['_id'] ?? json['id']),
+      type: json['type']?.toString(),
+      fileUrl: json['fileUrl']?.toString(),
+      sortOrder: ProductModel._parseInt(json['sortOrder']),
       title: title,
     );
   }

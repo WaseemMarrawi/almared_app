@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../../../core/error/error_mapper.dart';
 import '../../../../core/graphql/auth_mutations.dart';
+import '../../../../core/graphql/graphql_client.dart';
 import '../../../../core/notifications/device_token_service.dart';
 import '../models/auth_models.dart';
 
@@ -60,12 +61,10 @@ class AuthRepository {
       throw AuthException(loginResult.message ?? 'Login failed');
     }
 
-    debugPrint(
-      '🔐 AuthRepo.login — success, token: ${loginResult.token?.substring(0, 10)}...',
-    );
+    debugPrint('🔐 AuthRepo.login — success, token: ${_maskToken(loginResult.token)}');
     if (token != null) {
       debugPrint(
-        '🔐 AuthRepo.login — device token sent: ${token.substring(0, 20)}...',
+        '🔐 AuthRepo.login — device token sent: ${_maskToken(token, visible: 20)}',
       );
     }
     return loginResult;
@@ -87,7 +86,8 @@ class AuthRepository {
     // Get device token if not provided
     final token = deviceToken ?? await DeviceTokenService.getDeviceToken();
 
-    final result = await client.mutate(
+    final guestClient = GraphQLClientProvider.buildClient();
+    final result = await guestClient.mutate(
       MutationOptions(
         document: gql(registerMutation),
         variables: {
@@ -101,7 +101,6 @@ class AuthRepository {
             'isVerified': '1',
             'isSuspended': '0',
             'subscribedToNewsLetter': true,
-            if (token != null) 'deviceToken': token,
           },
         },
         fetchPolicy: FetchPolicy.noCache,
@@ -127,8 +126,12 @@ class AuthRepository {
       '📝 AuthRepo.register — success: ${customer.displayName}, token: ${customer.token}',
     );
     if (token != null) {
+      await _syncDeviceTokenAfterAuth(
+        accessToken: customer.token ?? customer.apiToken,
+        deviceToken: token,
+      );
       debugPrint(
-        '📝 AuthRepo.register — device token sent: ${token.substring(0, 20)}...',
+        '📝 AuthRepo.register — device token synced: ${_maskToken(token, visible: 20)}',
       );
     }
     return customer;
@@ -154,8 +157,8 @@ class AuthRepository {
       throw AuthException('Invalid response from server');
     }
 
-    final success = data['success'] as bool? ?? false;
-    final message = data['message'] as String? ?? '';
+    final success = _parseBool(data['success']);
+    final message = data['message']?.toString() ?? '';
 
     if (!success) {
       throw AuthException(message.isNotEmpty ? message : 'Request failed');
@@ -195,7 +198,7 @@ class AuthRepository {
         '🔐 AuthRepo.logout — device token sent to API and cleared locally',
       );
 
-      return data?['success'] as bool? ?? false;
+      return _parseBool(data?['success']);
     } catch (e) {
       debugPrint('❌ AuthRepo.logout — error: $e');
       // Still clear device token even if logout API fails
@@ -207,6 +210,57 @@ class AuthRepository {
   /// Extract a readable error message from GraphQL exceptions
   String _extractErrorMessage(OperationException exception) {
     return ErrorMapper.getUserMessage(exception);
+  }
+
+  Future<bool> updateDeviceToken({required String deviceToken}) async {
+    final result = await client.mutate(
+      MutationOptions(
+        document: gql(updateDeviceTokenMutation),
+        variables: {'deviceToken': deviceToken},
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    if (result.hasException) {
+      final message = _extractErrorMessage(result.exception!);
+      throw AuthException(message);
+    }
+
+    final data = result.data?['updateDeviceToken'];
+    return data == null ? true : _parseBool(data['success']);
+  }
+
+  Future<void> _syncDeviceTokenAfterAuth({
+    required String? accessToken,
+    required String deviceToken,
+  }) async {
+    if (accessToken == null || accessToken.isEmpty) return;
+
+    try {
+      final authClient =
+          GraphQLClientProvider.authenticatedClient(accessToken).value;
+      await AuthRepository(client: authClient).updateDeviceToken(
+        deviceToken: deviceToken,
+      );
+    } catch (e) {
+      debugPrint('⚠️ AuthRepo.register — device token sync skipped: $e');
+    }
+  }
+
+  String _maskToken(String? token, {int visible = 10}) {
+    if (token == null || token.isEmpty) return '<empty>';
+    final safeVisible = token.length < visible ? token.length : visible;
+    return '${token.substring(0, safeVisible)}...';
+  }
+
+  bool _parseBool(dynamic value) {
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    if (value is String) {
+      final lower = value.toLowerCase().trim();
+      return lower == 'true' || lower == '1';
+    }
+    return false;
   }
 }
 

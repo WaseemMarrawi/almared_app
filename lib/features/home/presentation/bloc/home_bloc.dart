@@ -161,7 +161,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       productCarousels.map((tc) async {
         try {
           final filters = tc.options['filters'] as Map<String, dynamic>? ?? {};
-          final sort = filters['sort'] as String?;
+          final sort = filters['sort']?.toString();
           final limitRaw = filters['limit'];
           final limit = limitRaw != null
               ? int.tryParse(limitRaw.toString()) ?? 8

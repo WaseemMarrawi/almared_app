@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../../../../core/error/error_mapper.dart';
 import '../../../../core/graphql/queries.dart';
 import '../models/category_model.dart';
 import '../models/filter_model.dart';
@@ -27,7 +28,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading categories'),
+      );
     }
 
     final data = result.data?['treeCategories'] as List<dynamic>?;
@@ -49,7 +52,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading categories'),
+      );
     }
 
     final edges = result.data?['categories']?['edges'] as List<dynamic>? ?? [];
@@ -98,7 +103,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading products'),
+      );
     }
 
     return PaginatedProducts.fromJson(result.data!);
@@ -142,7 +149,12 @@ class CategoryRepository {
 
     if (result.hasException) {
       debugPrint('[CategoryRepo] getFilterProducts error: ${result.exception}');
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(
+          result,
+          context: 'loading filtered products',
+        ),
+      );
     }
 
     debugPrint(
@@ -173,7 +185,9 @@ class CategoryRepository {
       );
 
       if (result.hasException) {
-        throw result.exception!;
+        throw Exception(
+          ErrorMapper.fromQueryResult(result, context: 'loading product'),
+        );
       }
 
       final product = ProductModel.fromJson(
@@ -194,7 +208,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading product'),
+      );
     }
 
     final product = ProductModel.fromJson(
@@ -224,7 +240,9 @@ class CategoryRepository {
       );
 
       if (result.hasException) {
-        throw result.exception!;
+        throw Exception(
+          ErrorMapper.fromQueryResult(result, context: 'loading product'),
+        );
       }
 
       final product = ProductModel.fromJson(
@@ -245,7 +263,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading product'),
+      );
     }
 
     final product = ProductModel.fromJson(
@@ -283,7 +303,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading booking slots'),
+      );
     }
 
     final slots = result.data?['bookingSlots'] as List<dynamic>? ?? const [];
@@ -313,7 +335,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading booking type'),
+      );
     }
 
     final product = result.data?['product'] as Map<String, dynamic>?;
@@ -336,7 +360,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading booking type'),
+      );
     }
 
     final product = result.data?['product'] as Map<String, dynamic>?;
@@ -392,7 +418,9 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading filters'),
+      );
     }
 
     final data = result.data?['attribute'] as Map<String, dynamic>?;
@@ -426,7 +454,9 @@ class CategoryRepository {
       debugPrint(
         '[CategoryRepo] getCategoryAttributeFilters error: ${result.exception}',
       );
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading filters'),
+      );
     }
 
     final edges =
@@ -463,7 +493,12 @@ class CategoryRepository {
     );
 
     if (result.hasException) {
-      throw result.exception!;
+      throw Exception(
+        ErrorMapper.fromQueryResult(
+          result,
+          context: 'loading related products',
+        ),
+      );
     }
 
     final edges =

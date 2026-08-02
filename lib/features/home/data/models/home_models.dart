@@ -29,10 +29,19 @@ class ThemeCustomization extends Equatable {
     // Parse translations → find the preferred locale, fallback to 'en', then first available
     Map<String, dynamic> options = {};
     Map<String, dynamic>? enOptions;
-    final translations = json['translations']?['edges'] as List? ?? [];
+    final rawTranslations = json['translations'];
+    final translations = rawTranslations is Map
+        ? rawTranslations['edges'] as List? ?? []
+        : rawTranslations is List
+            ? rawTranslations
+            : const [];
     for (final edge in translations) {
-      final node = edge['node'] as Map<String, dynamic>? ?? {};
-      final locale = node['locale'] as String? ?? '';
+      final node = edge is Map && edge['node'] is Map
+          ? Map<String, dynamic>.from(edge['node'] as Map)
+          : edge is Map
+              ? Map<String, dynamic>.from(edge)
+              : <String, dynamic>{};
+      final locale = node['locale']?.toString() ?? '';
 
       Map<String, dynamic>? parsed;
       final rawOptions = node['options'];
@@ -61,13 +70,10 @@ class ThemeCustomization extends Equatable {
 
     return ThemeCustomization(
       id: json['id']?.toString() ?? '',
-      type: json['type'] as String? ?? '',
-      name: json['name'] as String? ?? '',
-      status: json['status'] == true ||
-          json['status'] == 'true' ||
-          json['status'] == 1 ||
-          json['status'] == '1',
-      sortOrder: (json['sortOrder'] as num?)?.toInt() ?? 0,
+      type: json['type']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      status: _toBool(json['status']),
+      sortOrder: _toInt(json['sortOrder']) ?? 0,
       options: options,
     );
   }
@@ -98,11 +104,11 @@ class HomeCategory extends Equatable {
     final translation = json['translation'] as Map<String, dynamic>? ?? {};
     return HomeCategory(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      name: translation['name'] as String? ?? '',
-      slug: translation['slug'] as String? ?? '',
-      logoUrl: json['logoUrl'] as String?,
-      position: (json['position'] as num?)?.toInt() ?? 0,
+      numericId: _toInt(json['_id'] ?? json['id']),
+      name: translation['name']?.toString() ?? '',
+      slug: translation['slug']?.toString() ?? '',
+      logoUrl: json['logoUrl']?.toString(),
+      position: _toInt(json['position']) ?? 0,
     );
   }
 
@@ -186,23 +192,23 @@ class HomeProduct extends Equatable {
     final avgRating = ratings.isNotEmpty
         ? ratings.reduce((a, b) => a + b) / ratings.length
         : fallbackRating;
-    final fallbackReviewCount = (json['reviewCount'] as num?)?.toInt() ?? 0;
+    final fallbackReviewCount = _toInt(json['reviewCount']) ?? 0;
 
     return HomeProduct(
       id: json['id']?.toString() ?? '',
       numericId: numId,
-      sku: json['sku'] as String? ?? '',
-      type: json['type'] as String? ?? 'simple',
-      name: json['name'] as String? ?? '',
-      urlKey: json['urlKey'] as String? ?? '',
-      baseImageUrl: json['baseImageUrl'] as String?,
+      sku: json['sku']?.toString() ?? '',
+      type: json['type']?.toString() ?? 'simple',
+      name: json['name']?.toString() ?? '',
+      urlKey: json['urlKey']?.toString() ?? '',
+      baseImageUrl: json['baseImageUrl']?.toString(),
       price: _toDouble(json['price']),
       minimumPrice: json['minimumPrice'] != null ? _toDouble(json['minimumPrice']) : null,
       specialPrice: parsedSpecialPrice,
-      formattedPrice: json['formattedPrice'] as String?,
-      formattedMinimumPrice: json['formattedMinimumPrice'] as String?,
-      formattedSpecialPrice: json['formattedSpecialPrice'] as String?,
-      isSaleable: json['isSaleable'] == true,
+      formattedPrice: json['formattedPrice']?.toString(),
+      formattedMinimumPrice: json['formattedMinimumPrice']?.toString(),
+      formattedSpecialPrice: json['formattedSpecialPrice']?.toString(),
+      isSaleable: _toBool(json['isSaleable']),
       averageRating: avgRating,
       reviewCount: ratings.isNotEmpty ? ratings.length : fallbackReviewCount,
     );
@@ -301,9 +307,9 @@ class BannerImage extends Equatable {
 
   factory BannerImage.fromJson(Map<String, dynamic> json) {
     return BannerImage(
-      imageUrl: json['image'] as String? ?? '',
-      link: json['link'] as String? ?? '',
-      title: json['title'] as String?,
+      imageUrl: json['image']?.toString() ?? '',
+      link: json['link']?.toString() ?? '',
+      title: json['title']?.toString(),
     );
   }
 
@@ -325,4 +331,22 @@ double _toDouble(dynamic value) {
   if (value is num) return value.toDouble();
   if (value is String) return double.tryParse(value) ?? 0;
   return 0;
+}
+
+int? _toInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  final text = value.toString();
+  return int.tryParse(text) ?? int.tryParse(text.split('/').last);
+}
+
+bool _toBool(dynamic value) {
+  if (value is bool) return value;
+  if (value is num) return value != 0;
+  if (value is String) {
+    final lower = value.toLowerCase().trim();
+    return lower == 'true' || lower == '1';
+  }
+  return false;
 }

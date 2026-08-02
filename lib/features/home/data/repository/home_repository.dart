@@ -1,5 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../core/constants/api_constants.dart';
+import '../../../../core/error/error_mapper.dart';
 import '../../../../core/locale/locale_cubit.dart';
 import '../../../../core/graphql/queries.dart';
 import '../models/home_models.dart';
@@ -16,36 +18,52 @@ class HomeRepository {
   HomeRepository({required GraphQLClient client}) : _client = client;
 
   /// Fetches the theme customization entries that define homepage sections.
-  Future<List<ThemeCustomization>> fetchThemeCustomization() async {
+  Future<List<ThemeCustomization>> fetchThemeCustomization({
+    List<String> ids = homeThemeCustomizationIds,
+  }) async {
     // Read the user's preferred locale for selecting the right translation
     final prefs = await SharedPreferences.getInstance();
     final locale = prefs.getString(LocaleCubit.localeKey) ?? 'en';
 
+    final results = await Future.wait(
+      ids.map((id) => _fetchThemeCustomizationById(id, locale)),
+    );
+
+    return results
+        .whereType<ThemeCustomization>()
+        .where((tc) => tc.status)
+        .toList()
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  }
+
+  Future<ThemeCustomization?> _fetchThemeCustomizationById(
+    String id,
+    String locale,
+  ) async {
     final result = await _client.query(
       QueryOptions(
         document: gql(ThemeQueries.getThemeCustomization),
-        variables: const {'first': 50},
+        variables: {'id': id},
         fetchPolicy: FetchPolicy.cacheAndNetwork,
       ),
     );
 
     if (result.hasException) {
-      throw Exception(
-        'Failed to load theme customizations: ${result.exception}',
+      final message = ErrorMapper.fromQueryResult(
+        result,
+        context: 'loading theme customization $id',
       );
+      final raw = result.exception.toString();
+      if (raw.contains('not found') || raw.contains('does not exist')) {
+        return null;
+      }
+      throw Exception(message);
     }
 
-    final edges = result.data?['themeCustomization']?['edges'] as List? ?? [];
-    return edges
-        .map(
-          (e) => ThemeCustomization.fromJson(
-            e['node'] as Map<String, dynamic>,
-            preferredLocale: locale,
-          ),
-        )
-        .where((tc) => tc.status)
-        .toList()
-      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    final node = result.data?['themeCustomization'] as Map<String, dynamic>?;
+    if (node == null) return null;
+
+    return ThemeCustomization.fromJson(node, preferredLocale: locale);
   }
 
   /// Fetches categories for the horizontal category carousel.
@@ -58,7 +76,9 @@ class HomeRepository {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to load categories: ${result.exception}');
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading categories'),
+      );
     }
 
     final edges = result.data?['categories']?['edges'] as List? ?? [];
@@ -94,7 +114,9 @@ class HomeRepository {
     );
 
     if (result.hasException) {
-      throw Exception('Failed to load products: ${result.exception}');
+      throw Exception(
+        ErrorMapper.fromQueryResult(result, context: 'loading products'),
+      );
     }
 
     final edges = result.data?['products']?['edges'] as List? ?? [];

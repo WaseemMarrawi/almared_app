@@ -59,3 +59,12 @@ const String logoutMutation = r'''
     }
   }
 ''';
+
+const String updateDeviceTokenMutation = r'''
+  mutation updateDeviceToken($deviceToken: String!) {
+    updateDeviceToken(input: { deviceToken: $deviceToken }) {
+      success
+      message
+    }
+  }
+''';

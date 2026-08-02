@@ -511,8 +511,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           break;
 
         case 'static_content':
-          final htmlRaw = tc.options['html'] as String? ?? '';
-          final cssRaw = tc.options['css'] as String?;
+          final htmlRaw = tc.options['html']?.toString() ?? '';
+          final cssRaw = tc.options['css']?.toString();
           if (htmlRaw.isNotEmpty) {
             sections.add(
               StaticContentWidget(

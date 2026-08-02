@@ -57,8 +57,8 @@ class FilterAttribute {
 
     return FilterAttribute(
       id: json['id']?.toString() ?? '',
-      code: json['code'] as String? ?? '',
-      adminName: (json['code'] as String? ?? '').toUpperCase(),
+      code: json['code']?.toString() ?? '',
+      adminName: (json['code']?.toString() ?? '').toUpperCase(),
       options: optionEdges.map((edge) {
         final node = edge['node'] as Map<String, dynamic>;
         return FilterOption.fromJson(node);
@@ -78,20 +78,20 @@ class FilterAttribute {
     if (translationEdges != null && translationEdges.isNotEmpty) {
       final firstTranslation =
           translationEdges.first['node'] as Map<String, dynamic>?;
-      translatedName = firstTranslation?['name'] as String?;
+      translatedName = firstTranslation?['name']?.toString();
     }
 
     return FilterAttribute(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      code: json['code'] as String? ?? '',
-      adminName: json['adminName'] as String? ?? '',
-      type: json['type'] as String?,
-      swatchType: json['swatchType'] as String?,
-      validation: json['validation'] as String?,
-      position: json['position'] as int?,
-      isFilterable: json['isFilterable'] == true,
-      isConfigurable: json['isConfigurable'] == true,
+      numericId: _parseInt(json['_id'] ?? json['id']),
+      code: json['code']?.toString() ?? '',
+      adminName: json['adminName']?.toString() ?? '',
+      type: json['type']?.toString(),
+      swatchType: json['swatchType']?.toString(),
+      validation: json['validation']?.toString(),
+      position: _parseInt(json['position']),
+      isFilterable: _parseBool(json['isFilterable']),
+      isConfigurable: _parseBool(json['isConfigurable']),
       maxPrice: _parseDouble(json['maxPrice']),
       minPrice: _parseDouble(json['minPrice']),
       translatedName: translatedName,
@@ -106,8 +106,27 @@ class FilterAttribute {
     if (value == null) return null;
     if (value is double) return value;
     if (value is int) return value.toDouble();
+    if (value is num) return value.toDouble();
     if (value is String) return double.tryParse(value);
     return null;
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    final text = value.toString();
+    return int.tryParse(text) ?? int.tryParse(text.split('/').last);
+  }
+
+  static bool _parseBool(dynamic value) {
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    if (value is String) {
+      final lower = value.toLowerCase().trim();
+      return lower == 'true' || lower == '1';
+    }
+    return false;
   }
 }
 
@@ -137,12 +156,12 @@ class FilterOption {
     if (translations != null && translations.isNotEmpty) {
       final firstTranslation =
           translations.first['node'] as Map<String, dynamic>?;
-      label = firstTranslation?['label'] as String?;
+      label = firstTranslation?['label']?.toString();
     }
 
     return FilterOption(
       id: json['id']?.toString() ?? '',
-      adminName: json['adminName'] as String? ?? '',
+      adminName: json['adminName']?.toString() ?? '',
       label: label,
     );
   }
@@ -153,7 +172,7 @@ class FilterOption {
     String? label;
     final directTranslation = json['translation'] as Map<String, dynamic>?;
     if (directTranslation != null) {
-      label = directTranslation['label'] as String?;
+      label = directTranslation['label']?.toString();
     }
     if (label == null || label.isEmpty) {
       final translationEdges =
@@ -161,18 +180,18 @@ class FilterOption {
       if (translationEdges != null && translationEdges.isNotEmpty) {
         final firstTranslation =
             translationEdges.first['node'] as Map<String, dynamic>?;
-        label = firstTranslation?['label'] as String?;
+        label = firstTranslation?['label']?.toString();
       }
     }
 
     return FilterOption(
       id: json['id']?.toString() ?? '',
-      numericId: json['_id'] as int?,
-      adminName: json['adminName'] as String? ?? '',
+      numericId: FilterAttribute._parseInt(json['_id'] ?? json['id']),
+      adminName: json['adminName']?.toString() ?? '',
       label: label,
-      sortOrder: json['sortOrder'] as int?,
-      swatchValue: json['swatchValue'] as String?,
-      swatchValueUrl: json['swatchValueUrl'] as String?,
+      sortOrder: FilterAttribute._parseInt(json['sortOrder']),
+      swatchValue: json['swatchValue']?.toString(),
+      swatchValueUrl: json['swatchValueUrl']?.toString(),
     );
   }
 

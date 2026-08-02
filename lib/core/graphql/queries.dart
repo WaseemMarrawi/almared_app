@@ -1247,24 +1247,20 @@ class ThemeQueries {
   /// GET_THEME_CUSTOMIZATION
   /// Source: nextjs-commerce/src/graphql/theme/queries/ThemeCustomization.ts
   static const String getThemeCustomization = r'''
-    query themeCustomization($first: Int) {
-      themeCustomization(first: $first) {
-        edges {
-          node {
-            id
-            type
-            name
-            status
-            sortOrder
-            translations {
-              edges {
-                node {
-                  id
-                  themeCustomizationId
-                  locale
-                  options
-                }
-              }
+    query themeCustomization($id: ID!) {
+      themeCustomization(id: $id) {
+        id
+        type
+        name
+        status
+        sortOrder
+        translations {
+          edges {
+            node {
+              id
+              themeCustomizationId
+              locale
+              options
             }
           }
         }
